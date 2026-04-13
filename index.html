@@ -87,7 +87,7 @@
         }
 
         .card .bottom .content {
-            padding: 1.2rem;
+            padding: 1rem 1.2rem; /* Adjusted padding for better fit */
             opacity: 0;
             transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
             pointer-events: none;
@@ -105,12 +105,12 @@
             font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.9);
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .card .bottom .content .about-me {
             display: block;
-            font-size: 0.75rem;
+            font-size: 0.72rem; /* Slightly smaller for better clearance */
             color: white;
             line-height: 1.4;
         }
@@ -126,20 +126,10 @@
             z-index: 5;
         }
 
-        .card .bottom .bottom-bottom .social-links-container a {
-            display: flex;
-            align-items: center;
-        }
-
         .card .bottom .bottom-bottom .social-links-container svg {
             height: 22px;
             width: 22px;
             fill: white;
-            transition: transform 0.3s;
-        }
-
-        .card .bottom .bottom-bottom .social-links-container svg:hover {
-            transform: scale(1.1);
         }
 
         .card .bottom .bottom-bottom .button {
@@ -150,13 +140,6 @@
             font-size: 0.7rem;
             padding: 0.5rem 1rem;
             font-weight: bold;
-            transition: background 0.3s, color 0.3s, transform 0.2s;
-        }
-
-        .card .bottom .bottom-bottom .button:hover {
-            background: #f55d56;
-            color: white;
-            transform: translateY(-2px);
         }
 
         /* --- Hover States --- */
@@ -169,8 +152,8 @@
 
         .card:hover .bottom .content {
             opacity: 1;
-            /* Moves text down precisely below the 100px circle */
-            transform: translateY(90px); 
+            /* Adjusted from 90px to 75px to shift text UP */
+            transform: translateY(75px); 
             pointer-events: auto;
         }
 
