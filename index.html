@@ -67,8 +67,8 @@
             object-fit: cover;
             width: 100%;
             height: 100%;
-            /* Pulls image up to ensure head is visible */
-            object-position: center 5%; 
+            /* Keep head visible in square view */
+            object-position: center 15%; 
             transition: all 0.5s ease-in-out 0s;
         }
 
@@ -78,7 +78,7 @@
             left: 3px;
             right: 3px;
             background: #fbb9b6;
-            top: 80%; /* Initial visible sliver */
+            top: 80%;
             border-radius: 29px;
             z-index: 2;
             box-shadow: rgba(96, 75, 74, 0.1882352941) 0px 5px 5px 0px inset;
@@ -88,25 +88,41 @@
         }
 
         .card .bottom .content {
-            padding: 1.5rem;
+            padding: 1.2rem;
             opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            pointer-events: none; /* Ignore clicks when hidden */
+            transition: opacity 0.3s ease-in-out, margin-top 0.5s ease-in-out;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .card .bottom .content .name {
             display: block;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: white;
             font-weight: bold;
+            margin-bottom: 4px;
         }
 
         .card .bottom .content .about-me {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: white;
-            margin-top: 0.6rem;
-            line-height: 1.3;
+            line-height: 1.4;
+            /* Allow scrolling if content is long */
+            overflow-y: auto;
+            max-height: 85px; 
+            padding-right: 5px;
+        }
+
+        /* Custom scrollbar for a cleaner look */
+        .card .bottom .content .about-me::-webkit-scrollbar {
+            width: 3px;
+        }
+        .card .bottom .content .about-me::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
         }
 
         .card .bottom .bottom-bottom {
@@ -120,16 +136,10 @@
             z-index: 5;
         }
 
-        .card .bottom .bottom-bottom .social-links-container a {
-            display: flex;
-            align-items: center;
-        }
-
         .card .bottom .bottom-bottom .social-links-container svg {
             height: 22px;
             width: 22px;
             fill: white;
-            transition: transform 0.3s;
         }
 
         .card .bottom .bottom-bottom .button {
@@ -140,25 +150,20 @@
             font-size: 0.7rem;
             padding: 0.5rem 1rem;
             font-weight: bold;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        .card .bottom .bottom-bottom .button:hover {
-            background: #f55d56;
-            color: white;
         }
 
         /* --- Hover States --- */
 
         .card:hover .bottom {
             top: 20%;
-            border-radius: 80px 29px 29px 29px;
+            border-radius: 60px 29px 29px 29px;
             transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;
         }
 
         .card:hover .bottom .content {
             opacity: 1;
-            padding-top: 100px; /* Space for the circle */
+            /* Pushes name/desc below the 100px circle */
+            margin-top: 85px; 
             pointer-events: auto;
         }
 
@@ -169,13 +174,13 @@
             left: 10px;
             border-radius: 50%;
             z-index: 3;
-            border: 7px solid #fbb9b6;
+            border: 6px solid #fbb9b6;
             box-shadow: rgba(96, 75, 74, 0.1882352941) 0px 5px 5px 0px;
         }
 
         .card:hover .profile-pic img {
             transform: scale(1.1); 
-            object-position: center 5%; 
+            object-position: center 10%; 
         }
     </style>
 </head>
@@ -195,10 +200,10 @@
         <div class="bottom">
             <div class="content">
                 <span class="name">Anna Mopera</span>
-                <span class="about-me">
+                <div class="about-me">
                     <strong>Brand Specialist</strong><br>
                     Crafting compelling brand identities through strategic storytelling and visual excellence. Dedicated to elevating brands by aligning market position with authentic audience connection.
-                </span>
+                </div>
             </div>
 
             <div class="bottom-bottom">
