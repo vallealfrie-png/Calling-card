@@ -15,7 +15,21 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            padding: 20px 0;
             font-family: 'Inter', sans-serif;
+        }
+
+        /* --- Logo Styles (Outside Card) --- */
+        .company-logo-container {
+            margin-bottom: 20px; /* Space between logo and card */
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .company-logo-container img {
+            width: 120px; /* Slightly larger since it's outside */
+            height: auto;
         }
 
         /* --- Profile Card Styles --- */
@@ -30,17 +44,6 @@
             transition: all 0.5s ease-in-out;
             overflow: hidden;
             margin-bottom: 30px;
-        }
-
-        /* Company Logo Position */
-        .card .company-logo {
-            position: absolute;
-            left: 1.5rem;
-            top: 1.2rem;
-            z-index: 10;
-            width: 80px; /* Adjust size as needed */
-            height: auto;
-            pointer-events: none;
         }
 
         .card .mail {
@@ -173,7 +176,6 @@
             border-radius: 60px 29px 29px 29px;
         }
 
-        /* Your adjusted hover state */
         .card:hover .bottom .content {
             opacity: 1;
             transform: translateY(60px);
@@ -189,19 +191,15 @@
             z-index: 3;
             border: 6px solid #fbb9b6;
         }
-
-        /* Fade out logo on hover to keep the UI clean */
-        .card:hover .company-logo {
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <img src="https://i.imgur.com/VbZKWAf.png" alt="Company Logo" class="company-logo">
+    <div class="company-logo-container">
+        <img src="https://i.imgur.com/VbZKWAf.png" alt="Company Logo">
+    </div>
 
+    <div class="card">
         <a href="mailto:annamopera1105@gmail.com" class="mail">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
