@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anna Mopera | Brand Specialist</title>
+    <title>Anna Mopera | Portfolio</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
         body {
             background-color: #f0f2f5;
             display: flex;
+            flex-direction: column; /* Stack card and text vertically */
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             font-family: 'Inter', sans-serif;
         }
 
+        /* --- Profile Card Styles --- */
         .card {
             width: 280px;
             height: 280px;
@@ -27,14 +29,13 @@
             box-shadow: #604b4a30 0px 70px 30px -50px;
             transition: all 0.5s ease-in-out;
             overflow: hidden;
+            margin-bottom: 30px; /* Space between card and typing text */
         }
 
         .card .mail {
             position: absolute;
             right: 1.5rem;
             top: 1.4rem;
-            background: transparent;
-            border: none;
             z-index: 10;
             text-decoration: none;
         }
@@ -44,11 +45,6 @@
             stroke-width: 3px;
             width: 24px;
             height: 24px;
-            transition: stroke 0.3s;
-        }
-
-        .card .mail svg:hover {
-            stroke: #f55d56;
         }
 
         .card .profile-pic {
@@ -87,7 +83,7 @@
         }
 
         .card .bottom .content {
-            padding: 1rem 1.2rem; /* Adjusted padding for better fit */
+            padding: 1rem 1.2rem;
             opacity: 0;
             transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
             pointer-events: none;
@@ -100,7 +96,7 @@
             font-weight: bold;
         }
 
-        .card .bottom .content .position {
+        .card .bottom .content .position-label {
             display: block;
             font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.9);
@@ -110,7 +106,7 @@
 
         .card .bottom .content .about-me {
             display: block;
-            font-size: 0.72rem; /* Slightly smaller for better clearance */
+            font-size: 0.72rem;
             color: white;
             line-height: 1.4;
         }
@@ -126,11 +122,7 @@
             z-index: 5;
         }
 
-        .card .bottom .bottom-bottom .social-links-container svg {
-            height: 22px;
-            width: 22px;
-            fill: white;
-        }
+        .card .bottom .bottom-bottom svg { height: 22px; width: 22px; fill: white; }
 
         .card .bottom .bottom-bottom .button {
             background: white;
@@ -142,18 +134,46 @@
             font-weight: bold;
         }
 
-        /* --- Hover States --- */
+        /* --- Typing Animation Styles --- */
+        .wrapper {
+            text-align: center;
+        }
 
+        .title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333; /* Darker color for readability on light background */
+        }
+
+        .title span:after {
+            content: 'Brand Specialist';
+            animation: words 9s infinite;
+        }
+
+        @keyframes words {
+            0%, 33% {
+                content: 'Brand Specialist';
+                color: #f55d56;
+            }
+            34%, 66% {
+                content: 'Creative Designer';
+                color: #fbb9b6;
+            }
+            67%, 100% {
+                content: 'Marketing Strategist';
+                color: #ff9a9e;
+            }
+        }
+
+        /* --- Hover States --- */
         .card:hover .bottom {
             top: 20%;
             border-radius: 60px 29px 29px 29px;
-            transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;
         }
 
         .card:hover .bottom .content {
             opacity: 1;
-            /* Adjusted from 90px to 75px to shift text UP */
-            transform: translateY(60px); 
+            transform: translateY(75px);
             pointer-events: auto;
         }
 
@@ -165,12 +185,6 @@
             border-radius: 50%;
             z-index: 3;
             border: 6px solid #fbb9b6;
-            box-shadow: rgba(96, 75, 74, 0.1882352941) 0px 5px 15px 0px;
-        }
-
-        .card:hover .profile-pic img {
-            transform: scale(1.1); 
-            object-position: center 5%; 
         }
     </style>
 </head>
@@ -190,7 +204,7 @@
         <div class="bottom">
             <div class="content">
                 <span class="name">Anna Mopera</span>
-                <span class="position">Brand Specialist</span>
+                <span class="position-label">Brand Specialist</span>
                 <span class="about-me">
                     Elevating brands through strategic storytelling and visual identity. I bridge the gap between market positioning and authentic connection.
                 </span>
@@ -204,10 +218,16 @@
                         </svg>
                     </a>
                 </div>
-                
                 <a href="tel:+639778341105" class="button">Contact Me</a>
             </div>
         </div>
+    </div>
+
+    <div class="wrapper">
+        <h1 class="title">
+            I am a
+            <span></span>
+        </h1>
     </div>
 
 </body>
