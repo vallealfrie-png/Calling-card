@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Card Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        :root {
+            --primary: #ff8a8a;
+            --secondary: #fbc4ab;
+            --text-dark: #4a3f3f;
+            --bg-light: #fdf6f5;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- Editor Sidebar --- */
+        .sidebar {
+            width: 350px;
+            background: white;
+            padding: 30px;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+
+        .sidebar h2 { color: var(--text-dark); margin-bottom: 25px; }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 0.8rem; font-weight: 600; color: #888; margin-bottom: 5px; }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .print-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: opacity 0.2s;
+        }
+        .print-btn:hover { opacity: 0.9; }
+
+        /* --- Preview Area --- */
+        .preview-area {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #eef1f4;
+        }
+
+        /* --- THE CARD (Print Dimensions: 3.5in x 2in) --- */
+        #printable-card {
+            width: 3.5in;
+            height: 2in;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            padding: 0;
+            background: linear-gradient(135deg, #ffffff 60%, var(--bg-light) 100%);
+        }
+
+        .card-accent {
+            position: absolute;
+            top: 0; right: 0;
+            width: 40%; height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+        }
+
+        .card-content {
+            z-index: 2;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 60%;
+        }
+
+        .card-logo { width: 60px; margin-bottom: 10px; }
+
+        .card-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .card-pos {
+            font-size: 0.7rem;
+            color: var(--primary);
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .card-contact {
+            font-size: 0.6rem;
+            color: #777;
+            line-height: 1.5;
+        }
+
+        .qr-container {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 3;
+        }
+
+        /* --- Print Rules --- */
+        @media print {
+            body * { visibility: hidden; }
+            .preview-area, .preview-area * { visibility: visible; }
+            .preview-area {
+                position: absolute;
+                left: 0; top: 0;
+                width: 100%; background: white;
+            }
+            #printable-card {
+                box-shadow: none;
+                border: 1px solid #eee;
+            }
+            .sidebar { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>Card Editor</h2>
+        <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="inputName" value="Emee Lopez" oninput="updateCard()">
+        </div>
+        <div class="input-group">
+            <label>Position</label>
+            <input type="text" id="inputPos" value="Key Account Specialist" oninput="updateCard()">
+        </div>
+        <div class="input-group">
+            <label>Email</label>
+            <input type="text" id="inputEmail" value="kaseclopez21@gmail.com" oninput="updateCard()">
+        </div>
+        <div class="input-group">
+            <label>Phone</label>
+            <input type="text" id="inputPhone" value="+63 908 913 2134" oninput="updateCard()">
+        </div>
+        <div class="input-group">
+            <label>QR Code Link (Portfolio/Social)</label>
+            <input type="text" id="inputQR" value="https://facebook.com" oninput="updateQR()">
+        </div>
+
+        <button class="print-btn" onclick="window.print()">Print Card</button>
+    </div>
+
+    <div class="preview-area">
+        <div id="printable-card">
+            <div class="card-accent"></div>
+            
+            <div class="card-content">
+                <img src="https://i.imgur.com/VbZKWAf.png" class="card-logo" alt="Logo">
+                
+                <div>
+                    <h1 class="card-name" id="cardName">Emee Lopez</h1>
+                    <div class="card-pos" id="cardPos">Key Account Specialist</div>
+                </div>
+
+                <div class="card-contact">
+                    <div id="cardEmail">kaseclopez21@gmail.com</div>
+                    <div id="cardPhone">+63 908 913 2134</div>
+                </div>
+            </div>
+
+            <div class="qr-container">
+                <div id="qrcode"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize QR Code
+        const qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: "https://facebook.com",
+            width: 60,
+            height: 60,
+            colorDark : "#4a3f3f",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+
+        function updateCard() {
+            document.getElementById('cardName').innerText = document.getElementById('inputName').value;
+            document.getElementById('cardPos').innerText = document.getElementById('inputPos').value;
+            document.getElementById('cardEmail').innerText = document.getElementById('inputEmail').value;
+            document.getElementById('cardPhone').innerText = document.getElementById('inputPhone').value;
+        }
+
+        function updateQR() {
+            const data = document.getElementById('inputQR').value;
+            qrcode.clear();
+            qrcode.makeCode(data);
+        }
+    </script>
+</body>
+</html>
