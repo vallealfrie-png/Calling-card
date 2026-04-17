@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brand Identity Studio | V2.0</title>
+    <title>Brand Identity Studio | V3.1</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&family=JetBrains+Mono:wght@500;800&family=Orbitron:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
 
         :root {
-            --primary: #ff8a8a;
-            --secondary: #fbc4ab;
-            --text-dark: #4a3f3f;
+            /* Using your specific hex #1a3820 as the primary brand color */
+            --primary: #1a3820; 
+            --secondary: #2d5a36;
+            --text-dark: #1a3820;
             --card-bg: #ffffff;
-            --font-main: 'Inter', sans-serif;
         }
 
         body {
@@ -47,10 +47,10 @@
             padding: 10px; border: 2px solid #eee; border-radius: 8px; background: white; cursor: pointer;
             font-size: 0.8rem; font-weight: 600; transition: all 0.2s;
         }
-        .style-btn.active { border-color: var(--primary); background: #fffafa; color: var(--primary); }
+        .style-btn.active { border-color: var(--primary); background: #f4f7f5; color: var(--primary); }
 
         .print-btn {
-            width: 100%; padding: 15px; background: #333; color: white; border: none; border-radius: 8px;
+            width: 100%; padding: 15px; background: #1a3820; color: white; border: none; border-radius: 8px;
             font-weight: 700; cursor: pointer; margin-top: 15px; font-size: 1rem;
         }
 
@@ -69,40 +69,28 @@
         .theme-rose { --primary: #ff8a8a; --secondary: #fbc4ab; --text-dark: #4a3f3f; }
         .theme-rose .accent { position: absolute; right: 0; top: 0; width: 35%; height: 100%; background: linear-gradient(135deg, var(--primary), var(--secondary)); clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%); }
 
-        /* 2. Midnight Executive (Fixed Position Color) */
+        /* 2. Forest Corporate (New: #1a3820) */
+        .theme-forest { --primary: #1a3820; --secondary: #2d5a36; --text-dark: #1a3820; }
+        .theme-forest .accent { position: absolute; right: 0; top: 0; width: 30%; height: 100%; background: var(--primary); clip-path: polygon(30% 0%, 100% 0%, 100% 100%, 0% 100%); }
+        .theme-forest #card-pos { color: var(--primary); border-left: 2px solid var(--primary); padding-left: 8px; }
+
+        /* 3. Midnight Executive */
         .theme-midnight { --primary: #c5a059; --secondary: #333; --text-dark: #c5a059; --card-bg: #111; }
         .theme-midnight .accent { position: absolute; left: 0; bottom: 0; width: 100%; height: 8px; background: var(--primary); }
-        .theme-midnight #card-name { font-family: 'Playfair Display', serif; }
-        .theme-midnight #card-pos { color: var(--primary); opacity: 0.9; }
 
-        /* 3. Corporate Blue */
-        .theme-corporate { --primary: #004e92; --secondary: #000428; --text-dark: #1e2a38; }
-        .theme-corporate .accent { position: absolute; left: 0; top: 0; width: 10px; height: 100%; background: var(--primary); }
+        /* --- Card Content --- */
+        .card-body { z-index: 5; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; box-sizing: border-box; position: relative; }
+        .logo-box img { height: 32px; width: auto; margin-bottom: 5px; filter: grayscale(1) brightness(0.2); }
+        
+        /* If Forest theme, make logo pop more if needed or keep it standard */
+        .theme-forest .logo-box img { filter: none; }
 
-        /* 4. Minimalist */
-        .theme-minimal { --primary: #555; --secondary: #999; --text-dark: #222; }
-        .theme-minimal .qr-container { filter: grayscale(1); border: 1px solid #eee; }
-
-        /* 5. Cyberfunk (New Theme) */
-        .theme-cyber { --primary: #00ff00; --secondary: #ff00ff; --text-dark: #00ff00; --card-bg: #000; --font-main: 'Orbitron', sans-serif; }
-        .theme-cyber .accent { 
-            position: absolute; right: 0; top: 0; width: 100%; height: 100%; 
-            background: repeating-linear-gradient(0deg, rgba(0,255,0,0.03) 0px, rgba(0,255,0,0.03) 1px, transparent 1px, transparent 2px);
-        }
-        .theme-cyber #card-name { text-shadow: 2px 2px #ff00ff; color: #00ff00; text-transform: uppercase; }
-        .theme-cyber #card-pos { color: #fff; background: #ff00ff; padding: 2px 5px; font-size: 0.5rem; }
-        .theme-cyber .contact-info { color: #00ff00; font-family: 'JetBrains Mono'; }
-
-        /* --- Card Content Interior --- */
-        .card-body { z-index: 5; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; box-sizing: border-box; position: relative; }
-        .logo-box img { height: 35px; width: auto; margin-bottom: 10px; }
-        #card-name { font-size: 1.1rem; font-weight: 700; color: var(--text-dark); margin: 0; letter-spacing: 0.5px; font-family: var(--font-main); }
-        #card-pos { font-size: 0.65rem; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px; }
-        .contact-info { font-size: 0.55rem; color: #777; line-height: 1.4; margin-top: auto; }
-        .qr-wrapper { position: absolute; right: 20px; bottom: 20px; background: white; padding: 4px; border-radius: 4px; }
+        #card-name { font-size: 1.2rem; font-weight: 700; color: var(--text-dark); margin: 0; }
+        #card-pos { font-size: 0.65rem; color: #555; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+        .contact-info { font-size: 0.6rem; color: #666; line-height: 1.5; margin-top: auto; font-weight: 500; }
+        .qr-wrapper { position: absolute; right: 15px; bottom: 15px; background: white; padding: 5px; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 
         @media print {
-            body { background: white; }
             .sidebar { display: none; }
             .preview-area { padding: 0; }
             #card-container { box-shadow: none; border: 0.5px solid #eee; }
@@ -116,49 +104,47 @@
         
         <div class="input-group">
             <label>Name</label>
-            <input type="text" id="inName" value="Alfrie S. Valle" oninput="sync()">
+            <input type="text" id="inName" value="Maricel A. Ang" oninput="sync()">
         </div>
         <div class="input-group">
             <label>Title</label>
-            <input type="text" id="inPos" value="Full Stack Web Developer" oninput="sync()">
+            <input type="text" id="inPos" value="Marketing Events Activation Specialist" oninput="sync()">
         </div>
         <div class="input-group">
             <label>Email</label>
-            <input type="text" id="inEmail" value="alfrie.valle@example.com" oninput="sync()">
+            <input type="text" id="inEmail" value="angmcel.phmclp@gmail.com" oninput="sync()">
         </div>
         <div class="input-group">
             <label>Phone</label>
-            <input type="text" id="inPhone" value="+63 977 834 1105" oninput="sync()">
+            <input type="text" id="inPhone" value="+63 927 789 8188" oninput="sync()">
         </div>
         <div class="input-group">
-            <label>QR Link</label>
+            <label>Social Link (QR)</label>
             <input type="text" id="inQR" value="https://facebook.com/analiza.mopera" oninput="updateQR()">
         </div>
 
-        <label style="margin-top:20px;">Choose Design Style</label>
+        <label style="margin-top:20px;">Style Choices</label>
         <div class="style-grid">
-            <button class="style-btn active" onclick="setTheme('theme-rose', this)">Rose Gold</button>
-            <button class="style-btn" onclick="setTheme('theme-midnight', this)">Midnight (M)</button>
-            <button class="style-btn" onclick="setTheme('theme-corporate', this)">Corporate Blue</button>
-            <button class="style-btn" onclick="setTheme('theme-minimal', this)">Minimalist</button>
-            <button class="style-btn" onclick="setTheme('theme-cyber', this)">Cyberfunk</button>
+            <button class="style-btn theme-forest active" onclick="setTheme('theme-forest', this)">Forest Corporate</button>
+            <button class="style-btn theme-rose" onclick="setTheme('theme-rose', this)">Rose Gold (G)</button>
+            <button class="style-btn theme-midnight" onclick="setTheme('theme-midnight', this)">Midnight Gold</button>
         </div>
 
-        <button class="print-btn" onclick="window.print()">Download / Print PDF</button>
+        <button class="print-btn" onclick="window.print()">Print Digital Card</button>
     </div>
 
     <div class="preview-area">
-        <div id="card-container" class="theme-rose">
+        <div id="card-container" class="theme-forest">
             <div class="accent"></div>
             <div class="card-body">
                 <div class="logo-box"><img src="https://i.imgur.com/VbZKWAf.png" alt="Logo"></div>
                 <div class="main-info">
-                    <h1 id="card-name">Alfrie S. Valle</h1>
-                    <div id="card-pos">Full Stack Web Developer</div>
+                    <h1 id="card-name">Maricel A. Ang</h1>
+                    <div id="card-pos">Marketing Events Activation Specialist</div>
                 </div>
                 <div class="contact-info">
-                    <div id="card-email">alfrie.valle@example.com</div>
-                    <div id="card-phone">+63 977 834 1105</div>
+                    <div id="card-email">angmcel.phmclp@gmail.com</div>
+                    <div id="card-phone">+63 927 789 8188</div>
                 </div>
                 <div class="qr-wrapper"><div id="qrcode"></div></div>
             </div>
@@ -168,8 +154,8 @@
     <script>
         const qrcode = new QRCode(document.getElementById("qrcode"), {
             text: "https://facebook.com/analiza.mopera",
-            width: 55, height: 55,
-            colorDark : "#000000",
+            width: 60, height: 60,
+            colorDark : "#1a3820",
             colorLight : "#ffffff",
             correctLevel : QRCode.CorrectLevel.H
         });
@@ -191,6 +177,17 @@
             btn.classList.add('active');
             const container = document.getElementById('card-container');
             container.className = themeName;
+            
+            // Get the primary color of the theme to update the QR code color
+            const color = getComputedStyle(container).getPropertyValue('--primary').trim();
+            qrcode.clear();
+            new QRCode(document.getElementById("qrcode"), {
+                text: document.getElementById('inQR').value,
+                width: 60, height: 60,
+                colorDark : color,
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
         }
     </script>
 </body>
