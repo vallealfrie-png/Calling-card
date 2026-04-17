@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maricel A. Ang | Events Activation Specialist</title>
+    <title>Maricel A. Ang | Marketing Events Activation Specialist</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
@@ -55,10 +55,10 @@
         }
 
         .card .mail svg {
-            stroke: #ff8a8a;
-            stroke-width: 2.5px;
-            width: 22px;
-            height: 22px;
+            stroke: #ff8a8a; 
+            stroke-width: 3px;
+            width: 24px;
+            height: 24px;
         }
 
         .card .profile-pic {
@@ -77,6 +77,7 @@
             object-fit: cover;
             width: 100%;
             height: 100%;
+            /* Framing for Maricel's photo */
             object-position: center 20%; 
             transition: all 0.5s ease-in-out 0s;
         }
@@ -115,13 +116,13 @@
             font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.9);
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             line-height: 1.2;
         }
 
         .card .bottom .content .about-me {
             display: block;
-            font-size: 0.68rem;
+            font-size: 0.7rem;
             color: white;
             line-height: 1.4;
         }
@@ -137,27 +138,16 @@
             z-index: 5;
         }
 
-        /* Viber Icon Styling */
-        .viber-link {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            gap: 5px;
-        }
-
-        .viber-link svg {
-            height: 20px;
-            width: 20px;
-            fill: white;
-        }
+        /* Viber Icon Style */
+        .viber-btn svg { height: 22px; width: 22px; fill: white; }
 
         .card .bottom .bottom-bottom .button {
             background: white;
             color: #ff8a8a; 
             text-decoration: none;
             border-radius: 20px;
-            font-size: 0.65rem;
-            padding: 0.5rem 0.9rem;
+            font-size: 0.7rem;
+            padding: 0.5rem 1rem;
             font-weight: bold;
         }
 
@@ -169,7 +159,7 @@
 
         .card:hover .bottom .content {
             opacity: 1;
-            transform: translateY(45px); 
+            transform: translateY(50px); 
             pointer-events: auto;
         }
 
@@ -180,42 +170,43 @@
             left: 12px;
             border-radius: 50%;
             z-index: 3;
-            border: 6px solid white;
+            border: 6px solid #ff8a8a; 
         }
 
         .card:hover .profile-pic img {
             transform: scale(1.1); 
         }
 
+        /* --- Animation Section --- */
         .wrapper { text-align: center; }
-        .title { font-size: 1.4rem; font-weight: 700; color: #5a4a4a; }
+        .title { font-size: 1.5rem; font-weight: 700; color: #5a4a4a; }
         .title span:after {
             content: 'Marketing Events';
             animation: words 9s infinite;
         }
 
         @keyframes words {
-            0%, 33% { content: 'Events Specialist'; color: #ff8a8a; }
-            34%, 66% { content: 'Activations Expert'; color: #fbc4ab; }
-            67%, 100% { content: 'Brand Ambassador'; color: #ff9a9e; }
+            0%, 33% { content: 'Events Activation'; color: #ff8a8a; }
+            34%, 66% { content: 'Brand Specialist'; color: #fbc4ab; }
+            67%, 100% { content: 'Marketing Expert'; color: #ff9a9e; }
         }
     </style>
 </head>
 <body>
 
     <div class="company-logo-container">
-        <img src="https://https://i.imgur.com/pYCr0hL.png" alt="Company Logo">
+        <img src="https://i.imgur.com/VbZKWAf.png" alt="Company Logo">
     </div>
 
     <div class="card">
         <a href="mailto:angmcel.phmclp@gmail.com" class="mail">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
             </svg>
         </a>
 
         <div class="profile-pic">
-            <img src="https://i.imgur.com/aQ4KANH.png" alt="Maricel A. Ang">
+            <img src="https://i.imgur.com/pYCr0hL.png" alt="Maricel A. Ang">
         </div>
 
         <div class="bottom">
@@ -223,16 +214,18 @@
                 <span class="name">Maricel A. Ang</span>
                 <span class="position-label">Marketing Events Activation Specialist</span>
                 <span class="about-me">
-                    Bringing brands to life through immersive event experiences and strategic consumer activations that drive engagement and lasting impact.
+                    Expert in creating high-impact brand activations. I specialize in turning marketing strategies into immersive live experiences that drive engagement.
                 </span>
             </div>
 
             <div class="bottom-bottom">
-                <a href="viber://chat?number=%2B639277898188" class="viber-link" title="Chat on Viber">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17.57 18.23a.35.35 0 0 1 .15.29c0 .28-.27.51-.54.51a5.62 5.62 0 0 1-1.3-.23 10.15 10.15 0 0 1-5.11-3.32 10.11 10.11 0 0 1-3.32-5.11 5.48 5.48 0 0 1-.23-1.3c0-.27.23-.54.51-.54.12 0 .23.06.29.15l1.62 2.37c.07.1.08.23.03.34l-.62 1.34a1.07 1.07 0 0 0 .15 1.18c.55.7 1.2 1.35 1.9 1.9a1.07 1.07 0 0 0 1.18.15l1.34-.62c.11-.05.24-.04.34.03l2.37 1.62zM21.5 12c0 5.25-4.25 9.5-9.5 9.5S2.5 17.25 2.5 12 6.75 2.5 12 2.5s9.5 4.25 9.5 9.5z"/>
-                    </svg>
-                </a>
+                <div class="viber-btn">
+                    <a href="viber://chat?number=%2B639277898188" title="Chat on Viber">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.57 18.23a.35.35 0 0 1 .15.29c0 .28-.27.51-.54.51a5.62 5.62 0 0 1-1.3-.23 10.15 10.15 0 0 1-5.11-3.32 10.11 10.11 0 0 1-3.32-5.11 5.48 5.48 0 0 1-.23-1.3c0-.27.23-.54.51-.54.12 0 .23.06.29.15l1.62 2.37c.07.1.08.23.03.34l-.62 1.34a1.07 1.07 0 0 0 .15 1.18c.55.7 1.2 1.35 1.9 1.9a1.07 1.07 0 0 0 1.18.15l1.34-.62c.11-.05.24-.04.34.03l2.37 1.62zM21.5 12c0 5.25-4.25 9.5-9.5 9.5S2.5 17.25 2.5 12 6.75 2.5 12 2.5s9.5 4.25 9.5 9.5z"/>
+                        </svg>
+                    </a>
+                </div>
                 <a href="tel:+639277898188" class="button">Contact Me</a>
             </div>
         </div>
