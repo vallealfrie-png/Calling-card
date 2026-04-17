@@ -3,229 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Card Generator</title>
+    <title>Brand Identity Studio | Calling Card Generator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&family=JetBrains+Mono&display=swap');
 
         :root {
             --primary: #ff8a8a;
             --secondary: #fbc4ab;
             --text-dark: #4a3f3f;
-            --bg-light: #fdf6f5;
+            --card-bg: #ffffff;
+            --font-main: 'Inter', sans-serif;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
+            background-color: #f0f2f5;
             margin: 0;
             display: flex;
             min-height: 100vh;
         }
 
-        /* --- Editor Sidebar --- */
+        /* --- Sidebar UI --- */
         .sidebar {
-            width: 350px;
-            background: white;
-            padding: 30px;
-            box-shadow: 2px 0 15px rgba(0,0,0,0.05);
-            z-index: 10;
+            width: 380px;
+            background: #ffffff;
+            padding: 25px;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.05);
+            z-index: 100;
+            overflow-y: auto;
         }
 
-        .sidebar h2 { color: var(--text-dark); margin-bottom: 25px; }
-
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 0.8rem; font-weight: 600; color: #888; margin-bottom: 5px; }
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: inherit;
-            box-sizing: border-box;
+        h2 { color: #333; margin-top: 0; font-size: 1.2rem; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
+        .input-group { margin-bottom: 12px; }
+        label { display: block; font-size: 0.75rem; font-weight: 700; color: #666; margin-bottom: 4px; text-transform: uppercase; }
+        input {
+            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; box-sizing: border-box;
         }
+
+        /* Style Toggles */
+        .style-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 20px 0; }
+        .style-btn {
+            padding: 10px; border: 2px solid #eee; border-radius: 8px; background: white; cursor: pointer;
+            font-size: 0.8rem; font-weight: 600; transition: all 0.2s;
+        }
+        .style-btn:hover { border-color: #ddd; }
+        .style-btn.active { border-color: var(--primary); background: #fffafa; color: var(--primary); }
 
         .print-btn {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: opacity 0.2s;
+            width: 100%; padding: 15px; background: #333; color: white; border: none; border-radius: 8px;
+            font-weight: 700; cursor: pointer; margin-top: 15px; font-size: 1rem;
         }
-        .print-btn:hover { opacity: 0.9; }
 
         /* --- Preview Area --- */
-        .preview-area {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #eef1f4;
+        .preview-area { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; }
+        
+        /* Business Card Base (3.5in x 2in) */
+        #card-container {
+            width: 3.5in; height: 2in; background: var(--card-bg); border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1); position: relative; overflow: hidden;
+            display: flex; transition: all 0.3s ease; border: 1px solid #eee;
         }
 
-        /* --- THE CARD (Print Dimensions: 3.5in x 2in) --- */
-        #printable-card {
-            width: 3.5in;
-            height: 2in;
-            background: white;
-            border-radius: 5px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            padding: 0;
-            background: linear-gradient(135deg, #ffffff 60%, var(--bg-light) 100%);
-        }
+        /* --- STYLE THEMES --- */
 
-        .card-accent {
-            position: absolute;
-            top: 0; right: 0;
-            width: 40%; height: 100%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
-        }
+        /* 1. Rose Gold (Girlish) */
+        .theme-rose { --primary: #ff8a8a; --secondary: #fbc4ab; --text-dark: #4a3f3f; }
+        .theme-rose .accent { position: absolute; right: 0; top: 0; width: 35%; height: 100%; background: linear-gradient(135deg, var(--primary), var(--secondary)); clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%); }
 
-        .card-content {
-            z-index: 2;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 60%;
-        }
+        /* 2. Midnight Executive (Professional Male) */
+        .theme-midnight { --primary: #1a1a1a; --secondary: #333; --text-dark: #ffffff; --card-bg: #111; }
+        .theme-midnight .accent { position: absolute; left: 0; bottom: 0; width: 100%; height: 8px; background: #c5a059; } /* Gold bar */
+        .theme-midnight #card-name { color: #c5a059; font-family: 'Playfair Display', serif; }
 
-        .card-logo { width: 60px; margin-bottom: 10px; }
+        /* 3. Corporate Blue (Neutral/Modern) */
+        .theme-corporate { --primary: #004e92; --secondary: #000428; --text-dark: #1e2a38; }
+        .theme-corporate .accent { position: absolute; left: 0; top: 0; width: 10px; height: 100%; background: var(--primary); }
 
-        .card-name {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin: 0;
-            text-transform: uppercase;
-        }
+        /* 4. Minimalist White (Clean) */
+        .theme-minimal { --primary: #555; --secondary: #999; --text-dark: #222; }
+        .theme-minimal #card-container { border: 1px solid #ddd; }
+        .theme-minimal .qr-container { filter: grayscale(1); border: 1px solid #eee; }
 
-        .card-pos {
-            font-size: 0.7rem;
-            color: var(--primary);
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-        }
+        /* 5. Vibe Coding (Tech/Creative) */
+        .theme-vibe { --primary: #00f2fe; --secondary: #4facfe; --text-dark: #000; --font-main: 'JetBrains Mono', monospace; }
+        .theme-vibe .accent { position: absolute; right: -50px; top: -50px; width: 150px; height: 150px; background: var(--primary); filter: blur(40px); opacity: 0.5; border-radius: 50%; }
 
-        .card-contact {
-            font-size: 0.6rem;
-            color: #777;
-            line-height: 1.5;
-        }
+        /* --- Card Content Interior --- */
+        .card-body { z-index: 5; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; box-sizing: border-box; position: relative; }
+        
+        .logo-box img { height: 35px; width: auto; margin-bottom: 10px; }
+        
+        #card-name { font-size: 1.1rem; font-weight: 700; color: var(--text-dark); margin: 0; letter-spacing: 0.5px; font-family: var(--font-main); }
+        #card-pos { font-size: 0.65rem; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px; }
 
-        .qr-container {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: white;
-            padding: 5px;
-            border-radius: 5px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            z-index: 3;
-        }
+        .contact-info { font-size: 0.55rem; color: #777; line-height: 1.4; margin-top: auto; }
+        .theme-midnight .contact-info { color: #bbb; }
 
-        /* --- Print Rules --- */
+        .qr-wrapper { position: absolute; right: 20px; bottom: 20px; background: white; padding: 4px; border-radius: 4px; }
+
+        /* --- PRINT --- */
         @media print {
-            body * { visibility: hidden; }
-            .preview-area, .preview-area * { visibility: visible; }
-            .preview-area {
-                position: absolute;
-                left: 0; top: 0;
-                width: 100%; background: white;
-            }
-            #printable-card {
-                box-shadow: none;
-                border: 1px solid #eee;
-            }
+            body { background: white; }
             .sidebar { display: none; }
+            .preview-area { padding: 0; }
+            #card-container { box-shadow: none; border: 0.5px solid #eee; }
         }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2>Card Editor</h2>
+        <h2>Card Identity Studio</h2>
+        
         <div class="input-group">
-            <label>Full Name</label>
-            <input type="text" id="inputName" value="Emee Lopez" oninput="updateCard()">
+            <label>Name</label>
+            <input type="text" id="inName" value="Alfrie S. Valle" oninput="sync()">
         </div>
         <div class="input-group">
-            <label>Position</label>
-            <input type="text" id="inputPos" value="Key Account Specialist" oninput="updateCard()">
+            <label>Title</label>
+            <input type="text" id="inPos" value="Full Stack Web Developer" oninput="sync()">
         </div>
         <div class="input-group">
             <label>Email</label>
-            <input type="text" id="inputEmail" value="kaseclopez21@gmail.com" oninput="updateCard()">
+            <input type="text" id="inEmail" value="alfrie.valle@example.com" oninput="sync()">
         </div>
         <div class="input-group">
             <label>Phone</label>
-            <input type="text" id="inputPhone" value="+63 908 913 2134" oninput="updateCard()">
+            <input type="text" id="inPhone" value="+63 977 834 1105" oninput="sync()">
         </div>
         <div class="input-group">
-            <label>QR Code Link (Portfolio/Social)</label>
-            <input type="text" id="inputQR" value="https://facebook.com" oninput="updateQR()">
+            <label>QR Link (FB/Web)</label>
+            <input type="text" id="inQR" value="https://facebook.com/analiza.mopera" oninput="updateQR()">
         </div>
 
-        <button class="print-btn" onclick="window.print()">Print Card</button>
+        <label style="margin-top:20px;">Choose Design Style</label>
+        <div class="style-grid">
+            <button class="style-btn theme-rose active" onclick="setTheme('theme-rose', this)">Rose Gold (G)</button>
+            <button class="style-btn theme-midnight" onclick="setTheme('theme-midnight', this)">Midnight (M)</button>
+            <button class="style-btn theme-corporate" onclick="setTheme('theme-corporate', this)">Corporate Blue</button>
+            <button class="style-btn theme-minimal" onclick="setTheme('theme-minimal', this)">Minimalist</button>
+            <button class="style-btn theme-vibe" onclick="setTheme('theme-vibe', this)">Vibe Coding</button>
+        </div>
+
+        <button class="print-btn" onclick="window.print()">Download / Print PDF</button>
+        <p style="font-size: 0.6rem; color: #999; text-align: center; margin-top: 10px;">Set paper size to A4 and enable "Background Graphics" in print settings.</p>
     </div>
 
     <div class="preview-area">
-        <div id="printable-card">
-            <div class="card-accent"></div>
+        <div id="card-container" class="theme-rose">
+            <div class="accent"></div>
             
-            <div class="card-content">
-                <img src="https://i.imgur.com/VbZKWAf.png" class="card-logo" alt="Logo">
-                
-                <div>
-                    <h1 class="card-name" id="cardName">Emee Lopez</h1>
-                    <div class="card-pos" id="cardPos">Key Account Specialist</div>
+            <div class="card-body">
+                <div class="logo-box">
+                    <img src="https://i.imgur.com/VbZKWAf.png" alt="Logo">
                 </div>
 
-                <div class="card-contact">
-                    <div id="cardEmail">kaseclopez21@gmail.com</div>
-                    <div id="cardPhone">+63 908 913 2134</div>
+                <div class="main-info">
+                    <h1 id="card-name">Alfrie S. Valle</h1>
+                    <div id="card-pos">Full Stack Web Developer</div>
                 </div>
-            </div>
 
-            <div class="qr-container">
-                <div id="qrcode"></div>
+                <div class="contact-info">
+                    <div id="card-email">alfrie.valle@example.com</div>
+                    <div id="card-phone">+63 977 834 1105</div>
+                </div>
+
+                <div class="qr-wrapper">
+                    <div id="qrcode"></div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Initialize QR Code
         const qrcode = new QRCode(document.getElementById("qrcode"), {
-            text: "https://facebook.com",
-            width: 60,
-            height: 60,
-            colorDark : "#4a3f3f",
+            text: "https://facebook.com/analiza.mopera",
+            width: 55, height: 55,
+            colorDark : "#000000",
             colorLight : "#ffffff",
             correctLevel : QRCode.CorrectLevel.H
         });
 
-        function updateCard() {
-            document.getElementById('cardName').innerText = document.getElementById('inputName').value;
-            document.getElementById('cardPos').innerText = document.getElementById('inputPos').value;
-            document.getElementById('cardEmail').innerText = document.getElementById('inputEmail').value;
-            document.getElementById('cardPhone').innerText = document.getElementById('inputPhone').value;
+        function sync() {
+            document.getElementById('card-name').innerText = document.getElementById('inName').value;
+            document.getElementById('card-pos').innerText = document.getElementById('inPos').value;
+            document.getElementById('card-email').innerText = document.getElementById('inEmail').value;
+            document.getElementById('card-phone').innerText = document.getElementById('inPhone').value;
         }
 
         function updateQR() {
-            const data = document.getElementById('inputQR').value;
             qrcode.clear();
-            qrcode.makeCode(data);
+            qrcode.makeCode(document.getElementById('inQR').value);
+        }
+
+        function setTheme(themeName, btn) {
+            // Remove active classes
+            document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Apply theme to card
+            const container = document.getElementById('card-container');
+            container.className = ''; // clear
+            container.classList.add(themeName);
+
+            // Special logic for QR color in midnight theme
+            if(themeName === 'theme-midnight') {
+                // Keep QR readable on white background
+            }
         }
     </script>
 </body>
