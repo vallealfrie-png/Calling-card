@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brand Identity Studio | V3.5</title>
+    <title>Brand Identity Studio | V3.6</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&family=JetBrains+Mono:wght@500;800&family=Orbitron:wght@700&display=swap');
@@ -96,10 +96,23 @@
 
         /* THEME ACCENTS */
         
-        /* New: Prime Modern (Based on link) */
+        /* NEW: Royal S-Curve (Replaced Cyberfunk) */
+        .theme-royal { --primary: #c5a059; --secondary: #002b36; --text-dark: #ffffff; }
+        .theme-royal .card-inner { background: #002b36 !important; }
+        .theme-royal .accent { 
+            position: absolute; right: 25%; top: -50%; width: 100%; height: 200%; 
+            border-right: 25px solid var(--primary); border-radius: 50%;
+            opacity: 0.8; pointer-events: none;
+        }
+        .theme-royal .card-name { color: white; text-transform: uppercase; letter-spacing: 1px; }
+        .theme-royal .card-pos { color: #c5a059; opacity: 0.8; }
+        .theme-royal .contact-info { color: #eee; }
+        .theme-royal .qr-wrapper { background: transparent; padding: 0; }
+        /* Creating the gold icons effect via CSS */
+        .theme-royal .contact-info div::before { content: "• "; color: var(--primary); }
+
         .theme-prime { --primary: #1a3820; --secondary: #1a3820; --text-dark: #333; }
         .theme-prime .accent { position: absolute; left: 0; top: 0; width: 15px; height: 100%; background: var(--primary) !important; }
-        .theme-prime .logo-box { margin-bottom: 5px; }
 
         .theme-rose { --primary: #ff8a8a; --secondary: #fbc4ab; --text-dark: #4a3f3f; }
         .theme-rose .accent { position: absolute; right: 0; top: 0; width: 35%; height: 100%; background: linear-gradient(135deg, #ff8a8a, #fbc4ab) !important; clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%); }
@@ -113,10 +126,6 @@
         .theme-midnight { --primary: #c5a059; --secondary: #333; --text-dark: #c5a059; --card-bg: #111; }
         .theme-midnight .card-inner { background: #111 !important; }
         .theme-midnight .accent { position: absolute; left: 0; bottom: 0; width: 100%; height: 8px; background: #c5a059 !important; }
-
-        .theme-cyber { --primary: #00ff00; --secondary: #ff00ff; --text-dark: #00ff00; --font-main: 'Orbitron', sans-serif; }
-        .theme-cyber .card-inner { background: #000 !important; }
-        .theme-cyber .accent { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,255,0,0.05) 0px, rgba(0,255,0,0.05) 1px, transparent 1px, transparent 2px) !important; }
 
         /* Card Elements */
         .card-body { z-index: 5; padding: 18px 22px; display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; box-sizing: border-box; position: relative; }
@@ -146,11 +155,11 @@
         <label style="margin-top:20px;">Style Grid</label>
         <div class="style-grid">
             <button class="style-btn active" onclick="setTheme('theme-prime', this)">Prime Modern</button>
+            <button class="style-btn" onclick="setTheme('theme-royal', this)">Royal S-Curve</button>
             <button class="style-btn" onclick="setTheme('theme-rose', this)">Rose Gold</button>
             <button class="style-btn" onclick="setTheme('theme-forest', this)">Forest Green</button>
             <button class="style-btn" onclick="setTheme('theme-vibe', this)">Vibe Coding</button>
             <button class="style-btn" onclick="setTheme('theme-midnight', this)">Midnight</button>
-            <button class="style-btn" onclick="setTheme('theme-cyber', this)">Cyberfunk</button>
         </div>
 
         <button class="print-btn" onclick="window.print()">Print A4 (10 Cards)</button>
@@ -189,7 +198,9 @@
             for (let i = 0; i < 10; i++) {
                 qrInstances.push(new QRCode(document.getElementById(`qrcode-${i}`), {
                     text: document.getElementById('inQR').value,
-                    width: 45, height: 45
+                    width: 45, height: 45,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff"
                 }));
             }
         };
@@ -201,7 +212,22 @@
 
         function updateQR() {
             const val = document.getElementById('inQR').value;
-            qrInstances.forEach(qr => { qr.clear(); qr.makeCode(val); });
+            const activeTheme = document.querySelector('.style-btn.active').getAttribute('onclick').match(/'([^']+)'/)[1];
+            
+            qrInstances.forEach((qr, i) => { 
+                qr.clear();
+                // If it's the Royal theme, we make the QR code gold to match the design
+                const darkColor = (activeTheme === 'theme-royal') ? "#c5a059" : "#000000";
+                
+                // Re-creating the QR to update the color reliably
+                document.getElementById(`qrcode-${i}`).innerHTML = "";
+                qrInstances[i] = new QRCode(document.getElementById(`qrcode-${i}`), {
+                    text: val,
+                    width: 45, height: 45,
+                    colorDark : darkColor,
+                    colorLight : (activeTheme === 'theme-royal') ? "transparent" : "#ffffff"
+                });
+            });
         }
 
         function setTheme(themeName, btn) {
@@ -210,6 +236,7 @@
             document.querySelectorAll('.card-inner').forEach(card => {
                 card.className = 'card-inner ' + themeName;
             });
+            updateQR(); // Refresh QR color when theme changes
         }
     </script>
 </body>
