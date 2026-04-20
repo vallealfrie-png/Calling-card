@@ -3,151 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoom-Scroll Medical Slider</title>
+    <title>Smooth Scroll Reveal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        body { background-color: #020617; color: white; overflow-x: hidden; }
+        body { background-color: #020617; }
 
-        /* Controls the "length" of the scroll experience */
-        .scroll-height { height: 700vh; }
-
-        .viewport {
-            position: sticky;
-            top: 0;
+        /* Each section takes exactly 100% of the viewport */
+        section {
             height: 100vh;
             width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            perspective: 1200px;
-            overflow: hidden;
-        }
-
-        .slide-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-        }
-
-        .slide-wrapper {
-            position: absolute;
+            position: sticky;
+            top: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease-out;
-            will-change: transform, opacity;
+            justify-content: center;
+            overflow: hidden;
+            background-color: #020617;
         }
 
-        .slide-image {
-            width: 85vw;
-            max-width: 600px;
+        .image-container {
+            width: 90%;
+            max-width: 800px;
             aspect-ratio: 16/9;
-            object-fit: cover;
-            border-radius: 1rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #0f172a;
         }
 
-        .slide-title {
+        .medical-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensures the image is NEVER cut */
+            transition: transform 0.1s linear;
+        }
+
+        .content-overlay {
             margin-top: 2rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
             text-align: center;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Logic for the "Revealing" transition */
+        .reveal-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            clip-path: inset(100% 0 0 0); /* Hidden by default (bottom up) */
+            transition: clip-path 0.1s linear;
         }
     </style>
 </head>
 <body class="no-scrollbar">
 
-    <div class="scroll-height">
-        <div class="viewport">
-            
-            <div class="absolute top-10 left-10 z-50">
-                <p class="text-indigo-500 font-black tracking-widest text-xs uppercase">Medical Packages</p>
-            </div>
-
-            <div class="slide-wrapper" id="slide-0">
-                <img src="https://i.imgur.com/b3WI1PI.jpeg" class="slide-image">
-                <h2 class="slide-title text-3xl md:text-5xl">CABG</h2>
-            </div>
-
-            <div class="slide-wrapper" id="slide-1">
-                <img src="https://i.imgur.com/ulEsYqJ.jpeg" class="slide-image">
-                <h2 class="slide-title text-3xl md:text-5xl">Maternity</h2>
-            </div>
-
-            <div class="slide-wrapper" id="slide-2">
-                <img src="https://i.imgur.com/AnolGwk.png" class="slide-image">
-                <h2 class="slide-title text-3xl md:text-5xl">Cardiac Health</h2>
-            </div>
-
-            <div class="slide-wrapper" id="slide-3">
-                <img src="https://i.imgur.com/C53Uskn.jpeg" class="slide-image">
-                <h2 class="slide-title text-3xl md:text-5xl">Laparoscopic</h2>
-            </div>
-
-            <div class="slide-wrapper" id="slide-4">
-                <img src="https://i.imgur.com/48gJAM5.jpeg" class="slide-image">
-                <h2 class="slide-title text-3xl md:text-5xl">Liver Screening</h2>
-            </div>
-
+    <section id="sec-1" style="z-index: 1;">
+        <div class="image-container">
+            <img src="https://i.imgur.com/b3WI1PI.jpeg" class="medical-img">
         </div>
-    </div>
+        <div class="content-overlay">
+            <h2 class="text-white text-3xl md:text-5xl font-bold uppercase tracking-tighter">CABG</h2>
+            <p class="text-indigo-400 text-sm font-medium mt-2">Coronary Artery Bypass Graft</p>
+        </div>
+    </section>
+
+    <section id="sec-2" style="z-index: 2;">
+        <div class="image-container">
+            <img src="https://i.imgur.com/ulEsYqJ.jpeg" class="medical-img">
+        </div>
+        <div class="content-overlay">
+            <h2 class="text-white text-3xl md:text-5xl font-bold uppercase tracking-tighter">Maternity</h2>
+            <p class="text-indigo-400 text-sm font-medium mt-2">Premium Maternity Packages</p>
+        </div>
+    </section>
+
+    <section id="sec-3" style="z-index: 3;">
+        <div class="image-container">
+            <img src="https://i.imgur.com/AnolGwk.png" class="medical-img">
+        </div>
+        <div class="content-overlay">
+            <h2 class="text-white text-3xl md:text-5xl font-bold uppercase tracking-tighter">Cardiac</h2>
+            <p class="text-indigo-400 text-sm font-medium mt-2">Heart Health Screening</p>
+        </div>
+    </section>
+
+    <section id="sec-4" style="z-index: 4;">
+        <div class="image-container">
+            <img src="https://i.imgur.com/C53Uskn.jpeg" class="medical-img">
+        </div>
+        <div class="content-overlay">
+            <h2 class="text-white text-3xl md:text-5xl font-bold uppercase tracking-tighter">Laparoscopic</h2>
+            <p class="text-indigo-400 text-sm font-medium mt-2">Cholecystectomy Procedures</p>
+        </div>
+    </section>
+
+    <section id="sec-5" style="z-index: 5;">
+        <div class="image-container">
+            <img src="https://i.imgur.com/48gJAM5.jpeg" class="medical-img">
+        </div>
+        <div class="content-overlay">
+            <h2 class="text-white text-3xl md:text-5xl font-bold uppercase tracking-tighter">Liver Care</h2>
+            <p class="text-indigo-400 text-sm font-medium mt-2">Liver Screening Packages</p>
+        </div>
+    </section>
 
     <script>
-        const slides = document.querySelectorAll('.slide-wrapper');
-        const numSlides = slides.length;
+        const sections = document.querySelectorAll('section');
 
         window.addEventListener('scroll', () => {
-            const scrollPos = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const totalHeight = document.body.offsetHeight - windowHeight;
-            const scrollPercent = scrollPos / totalHeight;
+            const scrollY = window.scrollY;
+            const vh = window.innerHeight;
 
-            slides.forEach((slide, i) => {
-                // Determine the "center" point for this specific slide
-                // Each slide owns a portion of the total scroll
-                const slideStart = i / numSlides;
-                const slideEnd = (i + 1) / numSlides;
-                const slideMid = (slideStart + slideEnd) / 2;
-
-                // Distance from the current scroll to this slide's "focus" point
-                // progress = 0 when perfectly in focus, negative when upcoming, positive when past
-                const progress = (scrollPercent - slideMid) * numSlides;
-
-                // ZOOM LOGIC:
-                // Upcoming: scale starts small (e.g. 0.2)
-                // Focus: scale is 1.0
-                // Past: scale zooms way out (e.g. 3.0)
-                const scale = 1 + (progress * 2); 
+            sections.forEach((section, index) => {
+                // Determine how much of the section is scrolled
+                // sectionTop is where the section starts relative to the document
+                const sectionTop = vh * index;
+                const distance = scrollY - sectionTop;
                 
-                // OPACITY LOGIC:
-                // Smoothly appear around the 40% mark of its journey
-                let opacity = 0;
-                if (progress > -0.5 && progress < 0.5) {
-                    // This creates a bell curve for opacity
-                    opacity = 1 - Math.abs(progress) * 2;
+                // We calculate a percentage (0 to 1) of how much the section has "taken over"
+                let progress = Math.min(Math.max(distance / vh, 0), 1);
+
+                if (index > 0) {
+                    // For every section after the first, we adjust its "Reveal"
+                    // As progress goes from 0 to 1, the clip-path goes from 100% to 0%
+                    const revealPercent = 100 - (progress * 100);
+                    section.style.clipPath = `inset(${revealPercent}% 0 0 0)`;
                 }
-
-                // Apply styles
-                // We use translateZ for a true 3D feel or just Scale
-                slide.style.transform = `scale(${Math.max(0, scale)}) translateY(${progress * -50}px)`;
-                slide.style.opacity = Math.max(0, opacity);
-                
-                // Ensure the focused slide is always on top
-                slide.style.zIndex = opacity > 0.1 ? 10 : 0;
             });
         });
-
-        // Initialize first slide
-        window.dispatchEvent(new Event('scroll'));
     </script>
 </body>
 </html>
