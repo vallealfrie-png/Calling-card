@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimalist Medical Carousel</title>
+    <title>Zoom-Scroll Medical Slider</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        body { background-color: #0f172a; color: white; }
 
-        /* Slows down the scroll feel */
-        .scroll-container { height: 600vh; }
+        body { background-color: #020617; color: white; overflow-x: hidden; }
+
+        /* Controls the "length" of the scroll experience */
+        .scroll-height { height: 700vh; }
 
         .viewport {
             position: sticky;
@@ -20,158 +20,134 @@
             height: 100vh;
             width: 100%;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            align-items: center;
+            justify-content: center;
+            perspective: 1200px;
             overflow: hidden;
-            padding: 2rem;
         }
 
-        /* Fixed Background Image - ensuring it stays whole */
-        .image-stage {
+        .slide-container {
             position: absolute;
-            inset: 0;
-            z-index: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(circle, rgba(15,23,42,0.7) 0%, rgba(15,23,42,1) 100%);
+            pointer-events: none;
         }
 
-        .bg-img {
-            max-width: 80%;
-            max-height: 50%;
-            object-fit: contain; /* Keeps the whole image visible */
+        .slide-wrapper {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             opacity: 0;
-            transition: all 0.8s ease-in-out;
-            transform: translateY(20px);
-            position: absolute;
+            transition: opacity 0.3s ease-out;
+            will-change: transform, opacity;
         }
 
-        .bg-img.active {
-            opacity: 1;
-            transform: translateY(0);
+        .slide-image {
+            width: 85vw;
+            max-width: 600px;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* The Wheel Track - positioned bottom-right on mobile */
-        .wheel-track {
-            position: absolute;
-            bottom: -250px;
-            right: -250px;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            transition: transform 0.1s linear;
-        }
-
-        @media (min-width: 768px) {
-            .wheel-track {
-                bottom: auto;
-                top: 50%;
-                right: -300px;
-                transform: translateY(-50%);
-                width: 750px;
-                height: 750px;
-            }
-        }
-
-        .service-card {
-            transition: all 0.3s ease;
-            opacity: 0.2;
-            transform: scale(0.8);
-            white-space: nowrap;
-        }
-
-        .service-card.active {
-            opacity: 1;
-            transform: scale(1.1);
-            color: #818cf8;
+        .slide-title {
+            margin-top: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            text-align: center;
         }
     </style>
 </head>
 <body class="no-scrollbar">
 
-    <div class="image-stage">
-        <img src="https://i.imgur.com/b3WI1PI.jpeg" class="bg-img" id="bg-0">
-        <img src="https://i.imgur.com/ulEsYqJ.jpeg" class="bg-img" id="bg-1">
-        <img src="https://i.imgur.com/AnolGwk.png" class="bg-img" id="bg-2">
-        <img src="https://i.imgur.com/C53Uskn.jpeg" class="bg-img" id="bg-3">
-        <img src="https://i.imgur.com/48gJAM5.jpeg" class="bg-img" id="bg-4">
-    </div>
-
-    <div class="scroll-container">
+    <div class="scroll-height">
         <div class="viewport">
             
-            <div class="relative z-10 pt-10 md:pt-20 pointer-events-none">
-                <p class="text-indigo-400 font-bold tracking-[0.2em] text-xs uppercase mb-2">Package Selection</p>
-                <h2 id="focus-title" class="text-3xl md:text-5xl font-light tracking-tight max-w-xs md:max-w-md">CABG</h2>
+            <div class="absolute top-10 left-10 z-50">
+                <p class="text-indigo-500 font-black tracking-widest text-xs uppercase">Medical Packages</p>
             </div>
 
-            <div class="relative z-10 pb-10 flex items-center gap-4 text-slate-500 text-xs font-medium uppercase tracking-widest">
-                <div class="w-px h-12 bg-slate-700 relative overflow-hidden">
-                    <div id="scroll-bar" class="absolute top-0 left-0 w-full bg-indigo-500 h-0 transition-all"></div>
-                </div>
-                <span>Slide Down</span>
+            <div class="slide-wrapper" id="slide-0">
+                <img src="https://i.imgur.com/b3WI1PI.jpeg" class="slide-image">
+                <h2 class="slide-title text-3xl md:text-5xl">CABG</h2>
             </div>
 
-            <div id="wheel" class="wheel-track">
-                
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-slate-900 border border-white/10 rounded-full z-20 flex items-center justify-center">
-                    <div class="w-1 h-1 bg-indigo-500 rounded-full"></div>
-                </div>
-
-                <div class="item absolute" style="transform: rotate(0deg) translateX(-280px);"><div class="service-card font-medium text-sm md:text-base" data-index="0">CABG</div></div>
-                <div class="item absolute" style="transform: rotate(35deg) translateX(-280px);"><div class="service-card font-medium text-sm md:text-base" data-index="1">Maternity</div></div>
-                <div class="item absolute" style="transform: rotate(70deg) translateX(-280px);"><div class="service-card font-medium text-sm md:text-base" data-index="2">Cardiac Health</div></div>
-                <div class="item absolute" style="transform: rotate(105deg) translateX(-280px);"><div class="service-card font-medium text-sm md:text-base" data-index="3">Laparoscopic</div></div>
-                <div class="item absolute" style="transform: rotate(140deg) translateX(-280px);"><div class="service-card font-medium text-sm md:text-base" data-index="4">Liver Screening</div></div>
-
+            <div class="slide-wrapper" id="slide-1">
+                <img src="https://i.imgur.com/ulEsYqJ.jpeg" class="slide-image">
+                <h2 class="slide-title text-3xl md:text-5xl">Maternity</h2>
             </div>
+
+            <div class="slide-wrapper" id="slide-2">
+                <img src="https://i.imgur.com/AnolGwk.png" class="slide-image">
+                <h2 class="slide-title text-3xl md:text-5xl">Cardiac Health</h2>
+            </div>
+
+            <div class="slide-wrapper" id="slide-3">
+                <img src="https://i.imgur.com/C53Uskn.jpeg" class="slide-image">
+                <h2 class="slide-title text-3xl md:text-5xl">Laparoscopic</h2>
+            </div>
+
+            <div class="slide-wrapper" id="slide-4">
+                <img src="https://i.imgur.com/48gJAM5.jpeg" class="slide-image">
+                <h2 class="slide-title text-3xl md:text-5xl">Liver Screening</h2>
+            </div>
+
         </div>
     </div>
 
     <script>
-        const wheel = document.getElementById('wheel');
-        const cards = document.querySelectorAll('.service-card');
-        const bgs = document.querySelectorAll('.bg-img');
-        const focusTitle = document.getElementById('focus-title');
-        const scrollBar = document.getElementById('scroll-bar');
-        
-        const fullNames = [
-            "Coronary Artery Bypass Graft",
-            "Maternity Packages",
-            "Cardiac Health Packages",
-            "Laparoscopic Cholecystectomy",
-            "Liver Screening Packages"
-        ];
+        const slides = document.querySelectorAll('.slide-wrapper');
+        const numSlides = slides.length;
 
         window.addEventListener('scroll', () => {
-            const scrollPercent = window.scrollY / (document.body.offsetHeight - window.innerHeight);
-            
-            // UI Progress bar update
-            scrollBar.style.height = (scrollPercent * 100) + '%';
+            const scrollPos = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const totalHeight = document.body.offsetHeight - windowHeight;
+            const scrollPercent = scrollPos / totalHeight;
 
-            // Rotation Logic
-            const rotation = scrollPercent * -140;
-            wheel.style.transform = window.innerWidth < 768 
-                ? `rotate(${rotation}deg)` 
-                : `translateY(-50%) rotate(${rotation}deg)`;
+            slides.forEach((slide, i) => {
+                // Determine the "center" point for this specific slide
+                // Each slide owns a portion of the total scroll
+                const slideStart = i / numSlides;
+                const slideEnd = (i + 1) / numSlides;
+                const slideMid = (slideStart + slideEnd) / 2;
 
-            const activeIndex = Math.min(Math.max(Math.round(Math.abs(rotation) / 35), 0), 4);
+                // Distance from the current scroll to this slide's "focus" point
+                // progress = 0 when perfectly in focus, negative when upcoming, positive when past
+                const progress = (scrollPercent - slideMid) * numSlides;
 
-            cards.forEach((card, i) => {
-                const itemBaseRotation = i * 35;
-                card.style.transform = `rotate(${Math.abs(rotation) - itemBaseRotation}deg)`;
-
-                if (i === activeIndex) {
-                    card.classList.add('active');
-                    bgs[i].classList.add('active');
-                    focusTitle.innerText = fullNames[activeIndex];
-                } else {
-                    card.classList.remove('active');
-                    bgs[i].classList.remove('active');
+                // ZOOM LOGIC:
+                // Upcoming: scale starts small (e.g. 0.2)
+                // Focus: scale is 1.0
+                // Past: scale zooms way out (e.g. 3.0)
+                const scale = 1 + (progress * 2); 
+                
+                // OPACITY LOGIC:
+                // Smoothly appear around the 40% mark of its journey
+                let opacity = 0;
+                if (progress > -0.5 && progress < 0.5) {
+                    // This creates a bell curve for opacity
+                    opacity = 1 - Math.abs(progress) * 2;
                 }
+
+                // Apply styles
+                // We use translateZ for a true 3D feel or just Scale
+                slide.style.transform = `scale(${Math.max(0, scale)}) translateY(${progress * -50}px)`;
+                slide.style.opacity = Math.max(0, opacity);
+                
+                // Ensure the focused slide is always on top
+                slide.style.zIndex = opacity > 0.1 ? 10 : 0;
             });
         });
+
+        // Initialize first slide
+        window.dispatchEvent(new Event('scroll'));
     </script>
 </body>
 </html>
