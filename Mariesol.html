@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mariesol J. Lopez | Digital Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+        body {
+            background-color: #f0f4f8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* --- Logo Styles --- */
+        .company-logo-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .company-logo-container img {
+            width: 140px;
+            height: auto;
+        }
+
+        /* --- Profile Card Styles --- */
+        .card {
+            width: 280px;
+            height: 280px;
+            background: white;
+            border-radius: 32px;
+            padding: 3px;
+            position: relative;
+            box-shadow: #2c3e5020 0px 70px 30px -50px;
+            transition: all 0.5s ease-in-out;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .card .mail {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.4rem;
+            z-index: 10;
+            text-decoration: none;
+            color: #2c3e50; /* Professional Dark Blue/Grey */
+            font-size: 1.4rem;
+        }
+
+        .card .profile-pic {
+            position: absolute;
+            width: calc(100% - 6px);
+            height: calc(100% - 6px);
+            top: 3px;
+            left: 3px;
+            border-radius: 29px;
+            z-index: 1;
+            overflow: hidden;
+            transition: all 0.5s ease-in-out 0.2s;
+        }
+
+        .card .profile-pic img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            object-position: center 15%; 
+            transition: all 0.5s ease-in-out 0s;
+        }
+
+        .card .bottom {
+            position: absolute;
+            bottom: 3px;
+            left: 3px;
+            right: 3px;
+            background: #2c3e50; /* Professional Corporate Color */
+            top: 80%; 
+            border-radius: 29px;
+            z-index: 2;
+            box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 5px 0px inset;
+            transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card .bottom .content {
+            padding: 1rem 1.2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
+            pointer-events: none;
+        }
+
+        .card .bottom .content .name {
+            display: block;
+            font-size: 1.1rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .card .bottom .content .position-label {
+            display: block;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .card .bottom .content .about-me {
+            display: block;
+            font-size: 0.7rem;
+            color: white;
+            line-height: 1.4;
+        }
+
+        .card .bottom .bottom-bottom {
+            position: absolute;
+            bottom: 12px;
+            left: 1.2rem;
+            right: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 5;
+        }
+
+        .social-links-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .social-links-container a {
+            color: white;
+            font-size: 1.3rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links-container a:hover {
+            color: #ecf0f1;
+            transform: scale(1.2);
+        }
+
+        .card .bottom .bottom-bottom .button {
+            background: white;
+            color: #2c3e50; 
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+        }
+
+        /* --- Hover States --- */
+        .card:hover .bottom {
+            top: 20%;
+            border-radius: 60px 29px 29px 29px;
+        }
+
+        .card:hover .bottom .content {
+            opacity: 1;
+            transform: translateY(60px); 
+            pointer-events: auto;
+        }
+
+        .card:hover .profile-pic {
+            width: 100px;
+            height: 100px;
+            top: 12px;
+            left: 12px;
+            border-radius: 50%;
+            z-index: 3;
+            border: 6px solid #2c3e50; 
+        }
+
+        /* --- Typing Animation --- */
+        .wrapper { text-align: center; }
+        .title { font-size: 1.5rem; font-weight: 700; color: #333; }
+        .title span:after {
+            content: 'District Manager';
+            animation: words 9s infinite;
+        }
+
+        @keyframes words {
+            0%, 33% { content: 'District Manager'; color: #2c3e50; }
+            34%, 66% { content: 'Pharma Leader'; color: #34495e; }
+            67%, 100% { content: 'Business Manager'; color: #2980b9; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="company-logo-container">
+        <img src="https://i.imgur.com/iXmmaQH.png" alt="Company Logo">
+    </div>
+
+    <div class="card">
+        <a href="mailto:bdmmarielopez@gmail.com" class="mail">
+            <i class="fa-solid fa-envelope"></i>
+        </a>
+
+        <div class="profile-pic">
+            <img src="https://i.imgur.com/7e8XQBb.png" alt="Mariesol J. Lopez">
+        </div>
+
+        <div class="bottom">
+            <div class="content">
+                <span class="name">Mariesol J. Lopez</span>
+                <span class="position-label">District Manager | Pharmaceutical Division</span>
+                <span class="about-me">
+                    Driving growth and excellence in the pharmaceutical industry through strategic district management and dedicated healthcare partnerships.
+                </span>
+            </div>
+
+            <div class="bottom-bottom">
+                <div class="social-links-container">
+                    <a href="https://www.facebook.com/share/1AuaBz6k4w/?mibextid=wwXIfr" target="_blank">
+                        <i class="fa-brands fa-facebook"></i>
+                    </a>
+                    <a href="viber://chat?number=%2B639276125436">
+                        <i class="fa-brands fa-viber"></i>
+                    </a>
+                </div>
+                <a href="tel:+639276125436" class="button">Contact Me</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <h1 class="title">
+            I am a
+            <span></span>
+        </h1>
+    </div>
+
+</body>
+</html>
