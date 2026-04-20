@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brand Identity Studio | A4 Printable V3.4</title>
+    <title>Brand Identity Studio | V3.5</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&family=JetBrains+Mono:wght@500;800&family=Orbitron:wght@700&display=swap');
@@ -16,7 +16,12 @@
             --font-main: 'Inter', sans-serif;
         }
 
-        /* UI Styles - Hidden on Print */
+        /* FORCE COLORS ON PRINT */
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f0f2f5;
@@ -26,147 +31,143 @@
         }
 
         .sidebar {
-            width: 380px;
+            width: 320px;
             background: #ffffff;
-            padding: 25px;
+            padding: 20px;
             box-shadow: 5px 0 20px rgba(0,0,0,0.05);
             z-index: 100;
             overflow-y: auto;
             flex-shrink: 0;
         }
 
-        h2 { color: #333; margin-top: 0; font-size: 1.2rem; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .input-group { margin-bottom: 12px; }
-        label { display: block; font-size: 0.75rem; font-weight: 700; color: #666; margin-bottom: 4px; text-transform: uppercase; }
-        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        h2 { color: #333; font-size: 1.1rem; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .input-group { margin-bottom: 10px; }
+        label { display: block; font-size: 0.7rem; font-weight: 700; color: #666; margin-bottom: 3px; text-transform: uppercase; }
+        input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
 
-        .style-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 20px 0; }
+        .style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 15px 0; }
         .style-btn {
-            padding: 10px; border: 2px solid #eee; border-radius: 8px; background: white; cursor: pointer;
-            font-size: 0.8rem; font-weight: 600; transition: all 0.2s;
+            padding: 8px; border: 1px solid #eee; border-radius: 6px; background: white; cursor: pointer;
+            font-size: 0.75rem; font-weight: 600;
         }
         .style-btn.active { border-color: var(--primary); background: #fffafa; color: var(--primary); }
 
         .print-btn {
-            width: 100%; padding: 15px; background: #333; color: white; border: none; border-radius: 8px;
-            font-weight: 700; cursor: pointer; margin-top: 15px; font-size: 1rem;
+            width: 100%; padding: 12px; background: #1a3820; color: white; border: none; border-radius: 6px;
+            font-weight: 700; cursor: pointer; margin-top: 10px;
         }
 
-        /* Preview / Print Area */
+        /* Preview Area */
         .preview-area {
             flex-grow: 1;
-            padding: 40px;
+            padding: 20px;
             display: flex;
             justify-content: center;
             overflow-y: auto;
         }
 
-        /* The Grid for 10 cards */
+        /* A4 Layout */
         .print-grid {
             display: grid;
             grid-template-columns: repeat(2, 3.5in);
             grid-template-rows: repeat(5, 2in);
-            gap: 10px; /* Space between cards for cutting guides */
+            gap: 0; 
             padding: 10mm;
             background: white;
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: max-content;
         }
 
-        /* Card Container with Cutting Guide */
         .card-wrapper {
             width: 3.5in;
             height: 2in;
             position: relative;
-            border: 1px dashed #ccc; /* Cutting Guide */
+            outline: 0.5pt dashed #ddd; 
         }
 
         .card-inner {
             width: 100%;
             height: 100%;
-            background: var(--card-bg);
+            background: #ffffff;
             position: relative;
             overflow: hidden;
             display: flex;
-            transition: all 0.3s ease;
         }
 
-        /* THEMES */
+        /* THEME ACCENTS */
+        
+        /* New: Prime Modern (Based on link) */
+        .theme-prime { --primary: #1a3820; --secondary: #1a3820; --text-dark: #333; }
+        .theme-prime .accent { position: absolute; left: 0; top: 0; width: 15px; height: 100%; background: var(--primary) !important; }
+        .theme-prime .logo-box { margin-bottom: 5px; }
+
         .theme-rose { --primary: #ff8a8a; --secondary: #fbc4ab; --text-dark: #4a3f3f; }
-        .theme-rose .accent { position: absolute; right: 0; top: 0; width: 35%; height: 100%; background: linear-gradient(135deg, var(--primary), var(--secondary)); clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%); }
+        .theme-rose .accent { position: absolute; right: 0; top: 0; width: 35%; height: 100%; background: linear-gradient(135deg, #ff8a8a, #fbc4ab) !important; clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%); }
 
         .theme-forest { --primary: #1a3820; --secondary: #2d5a36; --text-dark: #1a3820; }
-        .theme-forest .accent { position: absolute; right: 0; top: 0; width: 30%; height: 100%; background: var(--primary); clip-path: polygon(30% 0%, 100% 0%, 100% 100%, 0% 100%); }
+        .theme-forest .accent { position: absolute; right: 0; top: 0; width: 30%; height: 100%; background: #1a3820 !important; clip-path: polygon(30% 0%, 100% 0%, 100% 100%, 0% 100%); }
 
         .theme-vibe { --primary: #00f2fe; --secondary: #4facfe; --text-dark: #000; --font-main: 'JetBrains Mono', monospace; }
-        .theme-vibe .accent { position: absolute; right: -50px; top: -50px; width: 150px; height: 150px; background: var(--primary); filter: blur(40px); opacity: 0.5; border-radius: 50%; }
+        .theme-vibe .accent { position: absolute; right: -50px; top: -50px; width: 150px; height: 150px; background: #00f2fe !important; filter: blur(40px); opacity: 0.5; border-radius: 50%; }
 
         .theme-midnight { --primary: #c5a059; --secondary: #333; --text-dark: #c5a059; --card-bg: #111; }
-        .theme-midnight .accent { position: absolute; left: 0; bottom: 0; width: 100%; height: 8px; background: var(--primary); }
-        .theme-midnight #card-name { font-family: 'Playfair Display', serif; }
+        .theme-midnight .card-inner { background: #111 !important; }
+        .theme-midnight .accent { position: absolute; left: 0; bottom: 0; width: 100%; height: 8px; background: #c5a059 !important; }
 
-        .theme-cyber { --primary: #00ff00; --secondary: #ff00ff; --text-dark: #00ff00; --card-bg: #000; --font-main: 'Orbitron', sans-serif; }
-        .theme-cyber .accent { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,255,0,0.03) 0px, rgba(0,255,0,0.03) 1px, transparent 1px, transparent 2px); }
-        .theme-cyber #card-pos { color: #fff; background: #ff00ff; padding: 2px 5px; font-size: 0.5rem; }
+        .theme-cyber { --primary: #00ff00; --secondary: #ff00ff; --text-dark: #00ff00; --font-main: 'Orbitron', sans-serif; }
+        .theme-cyber .card-inner { background: #000 !important; }
+        .theme-cyber .accent { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,255,0,0.05) 0px, rgba(0,255,0,0.05) 1px, transparent 1px, transparent 2px) !important; }
 
         /* Card Elements */
-        .card-body { z-index: 5; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; box-sizing: border-box; position: relative; }
-        .logo-box img { height: 30px; width: auto; }
+        .card-body { z-index: 5; padding: 18px 22px; display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; box-sizing: border-box; position: relative; }
+        .logo-box img { height: 32px; width: auto; }
         .card-name { font-size: 1.1rem; font-weight: 700; color: var(--text-dark); margin: 0; font-family: var(--font-main); }
         .card-pos { font-size: 0.6rem; color: var(--primary); font-weight: 600; text-transform: uppercase; margin-top: 2px; }
-        .contact-info { font-size: 0.5rem; color: #777; line-height: 1.3; }
-        .qr-wrapper { position: absolute; right: 15px; bottom: 15px; background: white; padding: 3px; border-radius: 2px; }
+        .contact-info { font-size: 0.5rem; color: #666; line-height: 1.4; font-weight: 500; }
+        .qr-wrapper { position: absolute; right: 20px; bottom: 18px; background: white; padding: 3px; border-radius: 2px; }
 
         @media print {
             @page { size: A4; margin: 0; }
             body { background: white; }
             .sidebar { display: none; }
-            .preview-area { padding: 0; }
-            .print-grid { box-shadow: none; gap: 0; padding: 10mm 5mm; }
-            .card-wrapper { border: 0.1pt dashed #aaa; } /* Fine line for cutting */
+            .preview-area { padding: 0; margin: 0; }
+            .print-grid { box-shadow: none; padding: 10mm 5mm; }
         }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2>Card Identity Studio</h2>
-        <div class="input-group">
-            <label>Name</label>
-            <input type="text" id="inName" value="Maricel A. Ang" oninput="sync()">
-        </div>
-        <div class="input-group">
-            <label>Title</label>
-            <input type="text" id="inPos" value="Marketing Events Activation Specialist" oninput="sync()">
-        </div>
-        <div class="input-group">
-            <label>QR Link</label>
-            <input type="text" id="inQR" value="https://facebook.com/analiza.mopera" oninput="updateQR()">
-        </div>
+        <h2>Identity Studio</h2>
+        <div class="input-group"><label>Name</label><input type="text" id="inName" value="Maricel A. Ang" oninput="sync()"></div>
+        <div class="input-group"><label>Title</label><input type="text" id="inPos" value="Marketing Events Activation Specialist" oninput="sync()"></div>
+        <div class="input-group"><label>QR Link</label><input type="text" id="inQR" value="https://facebook.com/analiza.mopera" oninput="updateQR()"></div>
 
-        <label style="margin-top:20px;">Choose Design Style</label>
+        <label style="margin-top:20px;">Style Grid</label>
         <div class="style-grid">
-            <button class="style-btn active" onclick="setTheme('theme-rose', this)">Rose Gold</button>
-            <button class="style-btn" onclick="setTheme('theme-forest', this)">Forest (#1a3820)</button>
+            <button class="style-btn active" onclick="setTheme('theme-prime', this)">Prime Modern</button>
+            <button class="style-btn" onclick="setTheme('theme-rose', this)">Rose Gold</button>
+            <button class="style-btn" onclick="setTheme('theme-forest', this)">Forest Green</button>
             <button class="style-btn" onclick="setTheme('theme-vibe', this)">Vibe Coding</button>
-            <button class="style-btn" onclick="setTheme('theme-midnight', this)">Midnight (M)</button>
+            <button class="style-btn" onclick="setTheme('theme-midnight', this)">Midnight</button>
             <button class="style-btn" onclick="setTheme('theme-cyber', this)">Cyberfunk</button>
         </div>
 
-        <button class="print-btn" onclick="window.print()">Print A4 Sheet (10 Cards)</button>
+        <button class="print-btn" onclick="window.print()">Print A4 (10 Cards)</button>
     </div>
 
     <div class="preview-area">
-        <div class="print-grid" id="print-grid">
-            </div>
+        <div class="print-grid" id="print-grid"></div>
     </div>
 
     <script>
-        // Generate 10 cards
         const grid = document.getElementById('print-grid');
+        let qrInstances = [];
+        
         for (let i = 0; i < 10; i++) {
             grid.innerHTML += `
                 <div class="card-wrapper">
-                    <div class="card-inner theme-rose">
+                    <div class="card-inner theme-prime">
                         <div class="accent"></div>
                         <div class="card-body">
                             <div class="logo-box"><img src="https://i.imgur.com/VbZKWAf.png" alt="Logo"></div>
@@ -184,28 +185,23 @@
                 </div>`;
         }
 
-        // Initialize 10 QRs
-        let qrInstances = [];
-        for (let i = 0; i < 10; i++) {
-            qrInstances.push(new QRCode(document.getElementById(`qrcode-${i}`), {
-                text: "https://facebook.com/analiza.mopera",
-                width: 45, height: 45
-            }));
-        }
+        window.onload = () => {
+            for (let i = 0; i < 10; i++) {
+                qrInstances.push(new QRCode(document.getElementById(`qrcode-${i}`), {
+                    text: document.getElementById('inQR').value,
+                    width: 45, height: 45
+                }));
+            }
+        };
 
         function sync() {
-            const name = document.getElementById('inName').value;
-            const pos = document.getElementById('inPos').value;
-            document.querySelectorAll('.card-name').forEach(el => el.innerText = name);
-            document.querySelectorAll('.card-pos').forEach(el => el.innerText = pos);
+            document.querySelectorAll('.card-name').forEach(el => el.innerText = document.getElementById('inName').value);
+            document.querySelectorAll('.card-pos').forEach(el => el.innerText = document.getElementById('inPos').value);
         }
 
         function updateQR() {
             const val = document.getElementById('inQR').value;
-            qrInstances.forEach(qr => {
-                qr.clear();
-                qr.makeCode(val);
-            });
+            qrInstances.forEach(qr => { qr.clear(); qr.makeCode(val); });
         }
 
         function setTheme(themeName, btn) {
