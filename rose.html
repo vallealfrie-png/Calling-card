@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rosalie C. Operaña | Digital Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+        body {
+            background-color: #fdf6f5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* --- Logo Styles --- */
+        .company-logo-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .company-logo-container img {
+            width: 130px;
+            height: auto;
+        }
+
+        /* --- Profile Card Styles --- */
+        .card {
+            width: 280px;
+            height: 280px;
+            background: white;
+            border-radius: 32px;
+            padding: 3px;
+            position: relative;
+            box-shadow: #e67e2230 0px 70px 30px -50px;
+            transition: all 0.5s ease-in-out;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .card .mail {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.4rem;
+            z-index: 10;
+            text-decoration: none;
+            color: #d35400;
+            font-size: 1.4rem;
+        }
+
+        .card .profile-pic {
+            position: absolute;
+            width: calc(100% - 6px);
+            height: calc(100% - 6px);
+            top: 3px;
+            left: 3px;
+            border-radius: 29px;
+            z-index: 1;
+            overflow: hidden;
+            transition: all 0.5s ease-in-out 0.2s;
+        }
+
+        .card .profile-pic img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            object-position: center 10%; /* Adjusted for the new photo */
+            transition: all 0.5s ease-in-out 0s;
+        }
+
+        .card .bottom {
+            position: absolute;
+            bottom: 3px;
+            left: 3px;
+            right: 3px;
+            background: linear-gradient(135deg, #e67e22, #f39c12); 
+            top: 80%; 
+            border-radius: 29px;
+            z-index: 2;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 5px 0px inset;
+            transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card .bottom .content {
+            padding: 1rem 1.2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
+            pointer-events: none;
+        }
+
+        .card .bottom .content .name {
+            display: block;
+            font-size: 1.1rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .card .bottom .content .position-label {
+            display: block;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .card .bottom .content .about-me {
+            display: block;
+            font-size: 0.7rem;
+            color: white;
+            line-height: 1.4;
+        }
+
+        .card .bottom .bottom-bottom {
+            position: absolute;
+            bottom: 12px;
+            left: 1.2rem;
+            right: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 5;
+        }
+
+        .social-links-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .social-links-container a {
+            color: white;
+            font-size: 1.3rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links-container a:hover {
+            color: #ffffff;
+            transform: scale(1.2);
+            opacity: 0.8;
+        }
+
+        .card .bottom .bottom-bottom .button {
+            background: white;
+            color: #e67e22; 
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+        }
+
+        /* --- Hover States --- */
+        .card:hover .bottom {
+            top: 20%;
+            border-radius: 60px 29px 29px 29px;
+        }
+
+        .card:hover .bottom .content {
+            opacity: 1;
+            transform: translateY(60px); 
+            pointer-events: auto;
+        }
+
+        .card:hover .profile-pic {
+            width: 100px;
+            height: 100px;
+            top: 12px;
+            left: 12px;
+            border-radius: 50%;
+            z-index: 3;
+            border: 6px solid #e67e22; 
+        }
+
+        /* --- Typing Animation --- */
+        .wrapper { text-align: center; }
+        .title { font-size: 1.5rem; font-weight: 700; color: #333; }
+        .title span:after {
+            content: 'Sales Director';
+            animation: words 9s infinite;
+        }
+
+        @keyframes words {
+            0%, 33% { content: 'Sales Director'; color: #e67e22; }
+            34%, 66% { content: 'Marketing Strategist'; color: #d35400; }
+            67%, 100% { content: 'Business Leader'; color: #f39c12; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="company-logo-container">
+        <img src="https://i.imgur.com/iXmmaQH.png" alt="Company Logo">
+    </div>
+
+    <div class="card">
+        <a href="mailto:rncoperana@gmail.com" class="mail">
+            <i class="fa-solid fa-envelope"></i>
+        </a>
+
+        <div class="profile-pic">
+            <img src="https://i.imgur.com/bAhRhlV.jpeg" alt="Rosalie C. Operaña">
+        </div>
+
+        <div class="bottom">
+            <div class="content">
+                <span class="name">Rosalie C. Operaña</span>
+                <span class="position-label">Sales & Marketing Director</span>
+                <span class="about-me">
+                    Driving impactful brand growth and sales excellence through strategic marketing initiatives and dedicated leadership in the professional sector.
+                </span>
+            </div>
+
+            <div class="bottom-bottom">
+                <div class="social-links-container">
+                    <a href="https://www.facebook.com/" target="_blank">
+                        <i class="fa-brands fa-facebook"></i>
+                    </a>
+                    <a href="viber://chat?number=%2B639177093506">
+                        <i class="fa-brands fa-viber"></i>
+                    </a>
+                </div>
+                <a href="tel:+639177093506" class="button">Contact Me</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <h1 class="title">
+            I am a
+            <span></span>
+        </h1>
+    </div>
+
+</body>
+</html>
