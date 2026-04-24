@@ -145,12 +145,6 @@
             transition: all 0.3s ease;
         }
 
-        .social-links-container a:hover {
-            color: #ffffff;
-            transform: scale(1.2);
-            opacity: 0.8;
-        }
-
         .card .bottom .bottom-bottom .button {
             background: white;
             color: #00ced1; 
@@ -183,8 +177,29 @@
             border: 6px solid #00ced1; 
         }
 
+        /* --- Save Contact Action Button --- */
+        .save-contact-btn {
+            margin-top: 15px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .save-contact-btn:active { transform: scale(0.95); }
+
         /* --- Typing Animation --- */
-        .wrapper { text-align: center; }
+        .wrapper { text-align: center; margin-top: 20px;}
         .title { font-size: 1.5rem; font-weight: 700; color: #333; }
         .title span:after {
             content: 'Data Analyst';
@@ -231,10 +246,14 @@
                         <i class="fa-brands fa-viber"></i>
                     </a>
                 </div>
-                <a href="tel:+639073574769" class="button">Contact Me</a>
+                <a href="tel:+639073574769" class="button">Call Now</a>
             </div>
         </div>
     </div>
+
+    <button class="save-contact-btn" onclick="downloadVCard()">
+        <i class="fa-solid fa-user-plus"></i> Save to Contacts
+    </button>
 
     <div class="wrapper">
         <h1 class="title">
@@ -242,6 +261,45 @@
             <span></span>
         </h1>
     </div>
+
+    <script>
+        function downloadVCard() {
+            // Your Contact details
+            const contact = {
+                firstName: "Alfrie",
+                lastName: "Valle",
+                organization: "Projectvibe",
+                title: "Data Analyst & Web Developer",
+                phone: "+639073574769",
+                email: "alfrie.phmc@gmail.com",
+                facebook: "https://www.facebook.com/share/1BdxX3dFgi/",
+                viber: "viber://chat?number=639073574769"
+            };
+
+            // Create vCard content
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:${contact.firstName} ${contact.lastName}
+N:${contact.lastName};${contact.firstName};;;
+ORG:${contact.organization}
+TITLE:${contact.title}
+TEL;TYPE=CELL,VOICE:${contact.phone}
+EMAIL;TYPE=PREF,INTERNET:${contact.email}
+URL;TYPE=Facebook:${contact.facebook}
+NOTE:Viber: ${contact.viber}
+REV:${new Date().toISOString()}
+END:VCARD`;
+
+            // Create blob and trigger download
+            const blob = new Blob([vcard], { type: "text/vcard" });
+            const url = window.URL.createObjectURL(blob);
+            const newLink = document.createElement("a");
+            newLink.download = `${contact.firstName}_${contact.lastName}.vcf`;
+            newLink.href = url;
+            newLink.click();
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
 
 </body>
 </html>
