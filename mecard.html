@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brand Identity Studio | V4.0 Pro</title>
+    <title>Brand Identity Studio | V4.5 Pro</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&family=JetBrains+Mono:wght@500;800&family=Orbitron:wght@700&display=swap');
 
         :root {
             --primary: #c5a059;
             --secondary: #1a3820;
             --text-dark: #4a3f3f;
             --card-bg: #ffffff;
+            --font-main: 'Inter', sans-serif;
         }
 
-        * {
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-        }
+        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -28,6 +26,7 @@
             min-height: 100vh;
         }
 
+        /* --- Sidebar Styles --- */
         .sidebar {
             width: 320px;
             background: #ffffff;
@@ -38,125 +37,159 @@
             flex-shrink: 0;
         }
 
-        h2 { color: #333; font-size: 1.1rem; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h2 { color: #333; font-size: 1.1rem; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0; }
         .input-group { margin-bottom: 10px; }
         label { display: block; font-size: 0.7rem; font-weight: 700; color: #666; margin-bottom: 3px; text-transform: uppercase; }
-        input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; }
 
-        /* Pro Toggle Style */
-        .toggle-group {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border: 1px solid #e9ecef;
-        }
-        .toggle-group label { color: #1a3820; margin-bottom: 5px; }
+        .toggle-group { background: #f8f9fa; padding: 12px; border-radius: 8px; margin: 15px 0; border: 1px solid #e9ecef; }
 
         .style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 15px 0; }
         .style-btn {
             padding: 8px; border: 1px solid #eee; border-radius: 6px; background: white; cursor: pointer;
-            font-size: 0.75rem; font-weight: 600;
+            font-size: 0.7rem; font-weight: 600; transition: 0.2s;
         }
-        .style-btn.active { border-color: var(--primary); background: #fffafa; color: var(--primary); }
+        .style-btn.active { border-color: var(--primary); background: #fffafa; color: var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 
-        .print-btn {
-            width: 100%; padding: 12px; background: #1a3820; color: white; border: none; border-radius: 6px;
-            font-weight: 700; cursor: pointer; margin-top: 10px;
+        .btn-main {
+            width: 100%; padding: 12px; border: none; border-radius: 6px;
+            font-weight: 700; cursor: pointer; margin-top: 10px; transition: 0.2s;
         }
+        .print-btn { background: #1a3820; color: white; }
+        .mode-btn { background: #2c3e50; color: white; }
 
+        /* --- Preview Area --- */
         .preview-area {
             flex-grow: 1;
-            padding: 20px;
+            padding: 40px;
             display: flex;
             justify-content: center;
+            align-items: flex-start;
             overflow-y: auto;
         }
 
-        .print-grid {
+        /* Mode: Single Card Display */
+        .single-mode .print-grid {
+            display: block;
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+        }
+        .single-mode .card-wrapper {
+            margin: 0 auto;
+            transform: scale(1.5); /* Make it large for digital preview */
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            outline: none;
+        }
+        .single-mode .card-wrapper:not(:first-child) { display: none; }
+
+        /* Mode: A4 Grid */
+        .grid-mode .print-grid {
             display: grid;
             grid-template-columns: repeat(2, 3.5in);
             grid-template-rows: repeat(5, 2in);
-            gap: 0; 
             padding: 10mm;
             background: white;
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            width: max-content;
         }
 
+        /* --- Card Foundation --- */
         .card-wrapper {
             width: 3.5in;
             height: 2in;
             position: relative;
-            outline: 0.5pt dashed #ddd; 
+            outline: 0.5pt dashed #ddd;
+            background: white;
         }
 
-        .card-inner {
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-        }
+        .card-inner { width: 100%; height: 100%; position: relative; overflow: hidden; display: flex; }
+        .card-body { z-index: 5; padding: 18px 22px; display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; position: relative; }
+        
+        .logo-box img { height: 32px; width: auto; }
+        .card-name { font-size: 1.1rem; font-weight: 700; margin: 0; font-family: var(--font-main); }
+        .card-pos { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+        .contact-info { font-size: 0.5rem; line-height: 1.4; font-weight: 500; }
+        .qr-wrapper { position: absolute; right: 20px; bottom: 18px; background: white; padding: 3px; border-radius: 2px; line-height: 0; }
 
-        /* Themes */
+        /* --- THEMES --- */
+        /* Royal S-Curve */
         .theme-royal { --primary: #c5a059; --secondary: #1a3820; --text-dark: #ffffff; }
-        .theme-royal .card-inner { background: #1a3820 !important; }
+        .theme-royal { background: #1a3820 !important; }
         .theme-royal .accent { 
             position: absolute; right: 20%; top: -20%; width: 80%; height: 140%; 
-            border-right: 18px solid var(--primary); 
-            border-radius: 45% 55% 50% 50% / 40% 40% 60% 60%;
-            transform: rotate(-5deg); opacity: 0.9; pointer-events: none;
+            border-right: 18px solid var(--primary); border-radius: 45% 55% 50% 50% / 40% 40% 60% 60%;
+            transform: rotate(-5deg); opacity: 0.9; 
         }
-        .theme-royal .card-name { color: white; text-transform: uppercase; letter-spacing: 1px; }
-        .theme-royal .card-pos { color: #c5a059; }
+        .theme-royal .card-name { color: white; }
+        .theme-royal .card-pos { color: var(--primary); }
         .theme-royal .contact-info { color: #f0f0f0; }
 
-        .theme-vibe { --primary: #00f2fe; --secondary: #4facfe; --text-dark: #000; --font-main: 'JetBrains Mono', monospace; }
+        /* Prime Modern */
+        .theme-prime { --primary: #1a3820; --text-dark: #333; }
+        .theme-prime .accent { position: absolute; left: 0; top: 0; width: 15px; height: 100%; background: var(--primary) !important; }
+
+        /* Rose Gold */
+        .theme-rose { --primary: #ff8a8a; --secondary: #fbc4ab; --text-dark: #4a3f3f; }
+        .theme-rose .accent { position: absolute; right: 0; top: 0; width: 35%; height: 100%; background: linear-gradient(135deg, #ff8a8a, #fbc4ab) !important; clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%); }
+
+        /* Forest Green */
+        .theme-forest { --primary: #1a3820; --secondary: #2d5a36; --text-dark: #1a3820; }
+        .theme-forest .accent { position: absolute; right: 0; top: 0; width: 30%; height: 100%; background: #1a3820 !important; clip-path: polygon(30% 0%, 100% 0%, 100% 100%, 0% 100%); }
+
+        /* Vibe Coding */
+        .theme-vibe { --primary: #00f2fe; --text-dark: #000; --font-main: 'JetBrains Mono', monospace; }
         .theme-vibe .accent { position: absolute; right: -50px; top: -50px; width: 150px; height: 150px; background: #00f2fe !important; filter: blur(40px); opacity: 0.5; border-radius: 50%; }
 
-        .card-body { z-index: 5; padding: 18px 22px; display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; box-sizing: border-box; position: relative; }
-        .logo-box img { height: 32px; width: auto; }
-        .card-name { font-size: 1.1rem; font-weight: 700; color: var(--text-dark); margin: 0; }
-        .card-pos { font-size: 0.6rem; color: var(--primary); font-weight: 600; text-transform: uppercase; margin-top: 2px; }
-        .contact-info { font-size: 0.5rem; line-height: 1.4; font-weight: 500; }
-        .qr-wrapper { position: absolute; right: 20px; bottom: 18px; background: white; padding: 3px; border-radius: 2px; }
+        /* Midnight Gold */
+        .theme-midnight { --primary: #c5a059; --card-bg: #111; --text-dark: #c5a059; }
+        .theme-midnight { background: #111 !important; }
+        .theme-midnight .accent { position: absolute; left: 0; bottom: 0; width: 100%; height: 8px; background: #c5a059 !important; }
+        .theme-midnight .card-name { color: #c5a059; }
 
         @media print {
             @page { size: A4; margin: 0; }
+            body { background: white; }
             .sidebar { display: none; }
-            .print-grid { box-shadow: none; padding: 10mm 5mm; }
+            .preview-area { padding: 0; margin: 0; display: block; }
+            .print-grid { box-shadow: none !important; padding: 10mm 5mm !important; display: grid !important; }
+            .card-wrapper { outline: 0.5pt dashed #ddd !important; transform: none !important; margin: 0 !important; }
+            .card-wrapper:not(:first-child) { display: block !important; }
         }
     </style>
 </head>
-<body>
+<body class="grid-mode">
 
     <div class="sidebar">
-        <h2>Identity Studio V4</h2>
-        <div class="input-group"><label>Full Name</label><input type="text" id="inName" value="Maricel A. Ang" oninput="sync()"></div>
+        <h2>Identity Studio V4.5</h2>
+        
+        <div class="input-group"><label>Name</label><input type="text" id="inName" value="Maricel A. Ang" oninput="sync()"></div>
         <div class="input-group"><label>Title</label><input type="text" id="inPos" value="Marketing Events Activation Specialist" oninput="sync()"></div>
         <div class="input-group"><label>Email</label><input type="text" id="inEmail" value="angmcel.phmclp@gmail.com" oninput="sync()"></div>
         <div class="input-group"><label>Phone</label><input type="text" id="inPhone" value="+639277898188" oninput="sync()"></div>
-        
+
         <div class="toggle-group">
-            <label>QR Mode</label>
-            <select id="qrMode" onchange="updateQR()" style="width:100%; padding:5px;">
-                <option value="link">Website Link</option>
+            <label>QR Smart Mode</label>
+            <select id="qrMode" onchange="updateQR()">
                 <option value="contact" selected>Smart Contact (Auto-Save)</option>
+                <option value="link">Website/Social Link</option>
             </select>
             <div id="linkInput" style="display:none; margin-top:10px;">
-                <label>URL</label>
-                <input type="text" id="inQR" value="https://facebook.com/profile" oninput="updateQR()">
+                <input type="text" id="inQR" value="https://facebook.com/profile" oninput="updateQR()" placeholder="Enter URL">
             </div>
         </div>
 
+        <label>Themes</label>
         <div class="style-grid">
-            <button class="style-btn active" onclick="setTheme('theme-royal', this)">Royal S-Curve</button>
-            <button class="style-btn" onclick="setTheme('theme-vibe', this)">Vibe Coding</button>
+            <button class="style-btn active" onclick="setTheme('theme-royal', this)">Royal Curve</button>
+            <button class="style-btn" onclick="setTheme('theme-prime', this)">Prime</button>
+            <button class="style-btn" onclick="setTheme('theme-rose', this)">Rose Gold</button>
+            <button class="style-btn" onclick="setTheme('theme-forest', this)">Forest</button>
+            <button class="style-btn" onclick="setTheme('theme-vibe', this)">Vibe</button>
+            <button class="style-btn" onclick="setTheme('theme-midnight', this)">Midnight</button>
         </div>
 
-        <button class="print-btn" onclick="window.print()">Print A4 (10 Cards)</button>
+        <button class="btn-main mode-btn" onclick="toggleView()">Toggle Preview/Print</button>
+        <button class="btn-main print-btn" onclick="window.print()">Print A4 (10 Cards)</button>
     </div>
 
     <div class="preview-area">
@@ -165,13 +198,14 @@
 
     <script>
         const grid = document.getElementById('print-grid');
+        let currentTheme = 'theme-royal';
         
         function initGrid() {
             grid.innerHTML = "";
             for (let i = 0; i < 10; i++) {
                 grid.innerHTML += `
                     <div class="card-wrapper">
-                        <div class="card-inner theme-royal">
+                        <div class="card-inner ${currentTheme}">
                             <div class="accent"></div>
                             <div class="card-body">
                                 <div class="logo-box"><img src="https://i.imgur.com/VbZKWAf.png" alt="Logo"></div>
@@ -193,57 +227,57 @@
 
         window.onload = initGrid;
 
+        function toggleView() {
+            document.body.classList.toggle('grid-mode');
+            document.body.classList.toggle('single-mode');
+        }
+
         function sync() {
-            document.querySelectorAll('.card-name').forEach(el => el.innerText = document.getElementById('inName').value);
-            document.querySelectorAll('.card-pos').forEach(el => el.innerText = document.getElementById('inPos').value);
-            document.querySelectorAll('.card-email').forEach(el => el.innerText = document.getElementById('inEmail').value);
-            document.querySelectorAll('.card-phone').forEach(el => el.innerText = document.getElementById('inPhone').value);
-            updateQR(); // Re-sync QR if text changes
+            const name = document.getElementById('inName').value;
+            const pos = document.getElementById('inPos').value;
+            const email = document.getElementById('inEmail').value;
+            const phone = document.getElementById('inPhone').value;
+
+            document.querySelectorAll('.card-name').forEach(el => el.innerText = name);
+            document.querySelectorAll('.card-pos').forEach(el => el.innerText = pos);
+            document.querySelectorAll('.card-email').forEach(el => el.innerText = email);
+            document.querySelectorAll('.card-phone').forEach(el => el.innerText = phone);
+            updateQR();
         }
 
         function updateQR() {
             const mode = document.getElementById('qrMode').value;
-            const linkDiv = document.getElementById('linkInput');
-            linkDiv.style.display = (mode === 'link') ? 'block' : 'none';
+            document.getElementById('linkInput').style.display = (mode === 'link') ? 'block' : 'none';
 
-            let qrContent = "";
-
+            let qrText = "";
             if (mode === 'contact') {
-                const name = document.getElementById('inName').value;
-                const phone = document.getElementById('inPhone').value;
-                const email = document.getElementById('inEmail').value;
-                const title = document.getElementById('inPos').value;
-                // MECARD Format for instant contact saving
-                qrContent = `MECARD:N:${name};TEL:${phone};EMAIL:${email};NOTE:${title};;`;
+                const n = document.getElementById('inName').value;
+                const p = document.getElementById('inPhone').value;
+                const e = document.getElementById('inEmail').value;
+                qrText = `MECARD:N:${n};TEL:${p};EMAIL:${e};;`;
             } else {
-                qrContent = document.getElementById('inQR').value;
+                qrText = document.getElementById('inQR').value;
             }
 
-            const activeBtn = document.querySelector('.style-btn.active');
-            const activeTheme = activeBtn ? activeBtn.getAttribute('onclick').match(/'([^']+)'/)[1] : 'theme-royal';
-            
             for (let i = 0; i < 10; i++) {
-                const qrContainer = document.getElementById(`qrcode-${i}`);
-                if (!qrContainer) continue;
-                qrContainer.innerHTML = "";
-                
-                const isRoyal = activeTheme === 'theme-royal';
-                new QRCode(qrContainer, {
-                    text: qrContent,
+                const container = document.getElementById(`qrcode-${i}`);
+                if (!container) continue;
+                container.innerHTML = "";
+                new QRCode(container, {
+                    text: qrText,
                     width: 45, height: 45,
-                    colorDark : isRoyal ? "#c5a059" : "#000000",
+                    colorDark : (currentTheme === 'theme-royal' || currentTheme === 'theme-midnight') ? "#c5a059" : "#000000",
                     colorLight : "#ffffff",
                     correctLevel : QRCode.CorrectLevel.M
                 });
             }
         }
 
-        function setTheme(themeName, btn) {
+        function setTheme(theme, btn) {
+            currentTheme = theme;
             document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            document.querySelectorAll('.card-inner').forEach(card => {
-                card.className = 'card-inner ' + themeName;
-            });
+            document.querySelectorAll('.card-inner').forEach(card => card.className = 'card-inner ' + theme);
             updateQR();
         }
     </script>
